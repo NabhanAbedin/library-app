@@ -1,11 +1,15 @@
+import {Route, Routes} from 'react-router-dom';
+import Library from './components/library/Library';
 
 function App() {
 
 
   return (
     
-      <p>hello world</p>
+     <Routes>
+      <Route path='/' element={<Library />} />
+     </Routes>
   )
 }
 
-export default App
+export default App;
