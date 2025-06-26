@@ -10,6 +10,9 @@ const Nav = () => {
             <Link to='/' className="nav-link">
               Library
             </Link>
+            <Link to='/addContent' className="nav-link">
+              add content
+            </Link>
             <Link to='/Catalog' className="nav-link">
               Catalog
             </Link>

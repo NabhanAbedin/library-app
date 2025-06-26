@@ -3,7 +3,8 @@ const pool = require('../db');
 const findAuthorId = async (authorName) => {
     const result = await pool.query('SELECT id FROM authors WHERE name = $1',[authorName]);
 
-    return result.rows[0].id ?? null;
+    if (result.rows.length === 0) return null;
+    return result.rows[0].id;
 };
 
 const addAuthor = async (authorName) => {
