@@ -15,18 +15,40 @@ const viewBooksModel = async () => {
 
 const joinTablesForBooks = async () => {
     const {rows} = await pool.query(
-        'SELECT b.id, b.title AS book_title, a.name AS author_name, g.type AS genre_type, b.release FROM books b JOIN authors a ON b.author_id = a.id JOIN genre g ON b.genre_id = g.id'
+        `SELECT
+         b.id,
+         b.title AS book_title,
+         a.name AS author_name,
+         g.type AS genre_type, 
+         b.release FROM books b 
+         JOIN authors a ON b.author_id = a.id 
+         JOIN genre g ON b.genre_id = g.id 
+          `
     );
 
     return rows;
 }
 
-const findBySearch = async () => {
-    //
-}
+const findBySearch = async (query) => {
+    const queryPattern = `%${query}%`
+    const {rows} = await pool.query(
+        `SELECT
+         b.id,
+         b.title AS book_title,
+         a.name AS author_name,
+         g.type AS genre_type, 
+         b.release FROM books b 
+         JOIN authors a ON b.author_id = a.id 
+         JOIN genre g ON b.genre_id = g.id 
+         WHERE title ILIKE $1  `,[queryPattern]
+    );
+
+    return rows;
+};
 
 module.exports = {
     addBook,
     viewBooksModel,
-    joinTablesForBooks
+    joinTablesForBooks,
+    findBySearch
 };

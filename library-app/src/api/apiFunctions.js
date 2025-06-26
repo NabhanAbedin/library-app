@@ -52,4 +52,11 @@ export const viewAllBooks = async () => {
     const result = await res.json();
     console.log(result);
     return result;
+};
+
+export const findBySearch = async (query) => {
+    const res = await fetch(`http://localhost:5001/books/catalog/search?query=${encodeURIComponent(query)}`);
+
+    const result = await res.json();
+    return result;
 }

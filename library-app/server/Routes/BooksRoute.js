@@ -9,4 +9,6 @@ router.post('/add', ctrl.addBookToCatalog);
 
 router.get('/catalog', ctrl.viewAllBooksData)
 
+router.get('/catalog/search', ctrl.viewBooksBySearch);
+
 module.exports = router;

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchCatalog from "./searchCatalog";
-import { viewAllBooks, formatRelease } from "../api/apiFunctions";
+import { viewAllBooks, findBySearch ,formatRelease } from "../api/apiFunctions";
 import {motion} from 'framer-motion';
 
 
@@ -39,13 +39,15 @@ const BooksCatalog = () => {
     const [ data, setData ] = useState(null);
  
     useEffect(()=> {
+        console.log("🔍 useEffect fired, query =", query)
         const fetchData = async () => {
             if (!query) {
                 const result = await viewAllBooks();
                 setData(result)
+                return;
             } 
-            //const result = await findBySearch(query);
-            //setData(result);
+            const result = await findBySearch(query);
+            setData(result);
         };
      fetchData();
     },[query])
