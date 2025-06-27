@@ -30,8 +30,8 @@ const BooksTable = ({books}) => {
             </tbody>
         </table>
     </div>
-    )
-}
+    );
+};
 
 const BooksCatalog = () => {
     const [ query, setQuery ] = useState(null);
