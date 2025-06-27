@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {motion} from 'framer-motion';
+import Filter from "./Filter";
 
-
-const SearchCatalog = ({setQuery}) => {
+const SearchCatalog = ({setQuery, setData}) => {
     const [text, setText] = useState('');
 
     return (
@@ -16,6 +16,7 @@ const SearchCatalog = ({setQuery}) => {
             whileHover={{ scale: 1.01 }}
             transition={{ type: "spring", stiffness: 300 }}
             >search</motion.button>
+            <Filter setData={setData}/>
         </div>
     );
 };

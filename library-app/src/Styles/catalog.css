@@ -85,9 +85,10 @@ body {
     gap: 1rem;
     align-items: center;
     max-width: 600px;
+    position: relative;
 }
 
-.books-catalog-container input[type="text"] {
+.search-container input[type="text"] {
     flex: 1;
     padding: 0.875rem 1.25rem;
     font-size: 1rem;
@@ -101,13 +102,97 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.books-catalog-container input[type="text"]:focus {
+.search-container input[type="text"]:focus {
     border-color: #3b82f6;
 }
 
-.books-catalog-container input[type="text"]::placeholder {
+.search-container input[type="text"]::placeholder {
     color: #9ca3af;
     font-weight: 300;
+}
+
+.filter-button {
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.filter-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.filter-inputs-container {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    min-width: 200px;
+    margin-top: 0.5rem;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+}
+
+.filter-section p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.filter-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-section label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.filter-section input[type="radio"] {
+    margin: 0;
+    accent-color: #3b82f6;
+}
+
+#order-select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    font-family: inherit;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    color: #374151;
+    cursor: pointer;
+    outline: none;
+}
+
+#order-select:focus {
+    border-color: #3b82f6;
 }
 
 .search-button {
@@ -243,5 +328,10 @@ body {
     .books-table td {
         padding: 0.75rem 1rem;
         font-size: 0.875rem;
+    }
+
+    .filter-inputs-container {
+        right: -1rem;
+        min-width: 180px;
     }
 }

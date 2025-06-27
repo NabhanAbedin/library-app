@@ -23,6 +23,7 @@ const joinTablesForBooks = async () => {
          b.release FROM books b 
          JOIN authors a ON b.author_id = a.id 
          JOIN genre g ON b.genre_id = g.id 
+         ORDER BY b.title DESC
           `
     );
 
@@ -40,9 +41,30 @@ const findBySearch = async (query) => {
          b.release FROM books b 
          JOIN authors a ON b.author_id = a.id 
          JOIN genre g ON b.genre_id = g.id 
-         WHERE title ILIKE $1  `,[queryPattern]
+         WHERE b.title ILIKE $1 
+         ORDER BY b.title DESC
+          `,[queryPattern]
     );
 
+    return rows;
+};
+
+const filterByBookModel = async (orderBy) => {
+    
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC'
+    const {rows} = await pool.query(
+        `SELECT 
+         b.id,
+         b.title AS book_title,
+         a.name AS author_name,
+         g.type AS genre_type,
+         b.release 
+         FROM books b
+         JOIN authors a ON b.author_id = a.id
+         JOIN genre g ON b.genre_id = g.id
+         ORDER BY b.title ${direction}
+        `
+    );
     return rows;
 };
 
@@ -50,5 +72,6 @@ module.exports = {
     addBook,
     viewBooksModel,
     joinTablesForBooks,
-    findBySearch
+    findBySearch,
+    filterByBookModel
 };

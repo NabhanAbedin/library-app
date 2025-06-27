@@ -11,4 +11,6 @@ router.get('/catalog', ctrl.viewAllBooksData)
 
 router.get('/catalog/search', ctrl.viewBooksBySearch);
 
+router.get('/catalog/filter', ctrl.filterController)
+
 module.exports = router;

@@ -1,10 +1,9 @@
-import Nav from "../components/nav";
+import Nav from "../nav";
 import {Link} from 'react-router-dom';
 import {motion} from 'framer-motion';
 import { useState } from "react";
 import BooksCatalog from "./BooksCatalog";
-import '../Styles/catalog.css';
-
+import '../../Styles/catalog.css';
 
 const Catalog = () => {
     const [ selected, setSelected ] = useState(null);

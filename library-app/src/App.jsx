@@ -1,7 +1,7 @@
 import {Route, Routes} from 'react-router-dom';
 import Library from './components/library/Library';
 import AddContent from './components/addContent/AddContent';
-import Catalog from './catalog/Catalog';
+import Catalog from './components/catalog/Catalog';
 
 function App() {
 

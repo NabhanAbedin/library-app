@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchCatalog from "./searchCatalog";
-import { viewAllBooks, findBySearch ,formatRelease } from "../api/apiFunctions";
+import { viewAllBooks, findBySearch ,formatRelease } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
-
 
 
 const BooksTable = ({books}) => {
@@ -59,7 +58,7 @@ const BooksCatalog = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         >
-            <SearchCatalog setQuery={setQuery}/>
+            <SearchCatalog setQuery={setQuery} setData={setData}/>
             {data && <BooksTable books={data}/>}
              
         
@@ -68,4 +67,3 @@ const BooksCatalog = () => {
 };
 
 export default BooksCatalog;
-

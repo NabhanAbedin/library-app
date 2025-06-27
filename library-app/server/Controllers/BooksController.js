@@ -1,5 +1,5 @@
 const { findAuthorId, addAuthor } = require('../Models/authorsModel');
-const { addBook, viewBooksModel, joinTablesForBooks, findBySearch } = require('../Models/BooksModel');
+const { addBook, viewBooksModel, joinTablesForBooks, findBySearch, filterByBookModel } = require('../Models/BooksModel');
 const {findGenreId, addGenre} = require('../Models/genreModel');
 
 
@@ -60,13 +60,23 @@ const viewBooksBySearch = async (req,res) => {
         console.log(err);
         return res.status(500).json('could not use query to find books');
     }
+};
 
+const filterController = async (req,res) => {
+    //get the value from the filterBy variable from the url
+    const {sortBy, orderBy} = req.query;
 
+    if (sortBy === 'books') {
+        const result = await filterByBookModel(orderBy);
+        res.json(result);
+    }
 }
+
 
 module.exports = {
     addBookToCatalog,
     viewBooks,
     viewAllBooksData,
-    viewBooksBySearch
+    viewBooksBySearch,
+    filterController
 }
