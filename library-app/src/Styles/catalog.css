@@ -4,7 +4,7 @@ body {
 }
 
 .catalog-header {
-    margin-top: 70px;
+    margin-top: 20px;
     max-width: 700px;
     padding-top: 5%;
     padding-left: 5%;
@@ -220,6 +220,30 @@ body {
 
 .search-button:active {
     background-color: #1d4ed8;
+}
+
+/* Year inputs styling to match search input */
+.years-input-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.years-input-container input[type="number"] {
+    flex: 1;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #0a0a0a;
+    letter-spacing: -0.01em;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.years-input-container input[type="number"]:focus {
+    border-color: #3b82f6;
 }
 
 /* books table */

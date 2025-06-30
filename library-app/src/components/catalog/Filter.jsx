@@ -2,6 +2,7 @@ import filterImg from '../../images/filter.png';
 import squaresImg from '../../images/squares.png';
 import { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion';
+import SortByYear from './SortByYear.jsx';
 import { filterByBook } from '../../api/apiFunctions.js';
 
 
@@ -29,13 +30,19 @@ const SortBy = ({filterData, setFilterData }) => {
   );
 };
 
+
+
 const Filter = ({setData}) => {
     const [active, setActive] = useState(false);
     const [filterData, setFilterData] = useState({
         sortBy: 'books',
-        orderBy: 'descending'
+        orderBy: 'descending',
+        from: null,
+        to: null
         
-    })
+    });
+    const [inputFrom , setInputFrom] = useState('');
+    const [inputTo , setInputTo] = useState('');
 
     useEffect(()=> {
         const fetchData = async () => {
@@ -51,7 +58,6 @@ const Filter = ({setData}) => {
         fetchData();
     },[filterData])
 
-    //the idea is that first its going to be a mini drop down to where the user decides which category they want to sort by after the user chooses, its going to animate into a bigger drop down where the user then has choices depending on the choice, being advanced features as normally it will be sorted A-Z all the filtering will be done through sql query functions in order to practice the use of sql the controller will then handle how the table is rendered through conditionals sent with one api function
     return (
         <>
         <button className="filter-button" onClick={()=> setActive(!active)}><img src={squaresImg} alt="" /></button>
@@ -83,6 +89,12 @@ const Filter = ({setData}) => {
                         <option value="ascending">Ascending</option>
                         <option value="descending">Descending</option>
                         </select>
+                    </div>
+                    <div className='filter-section'>
+                        <SortByYear inputFrom={inputFrom} setInputFrom={setInputFrom}
+                        inputTo={inputTo} setInputTo={setInputTo}
+                        setFilterData={setFilterData}/>
+                        
                     </div>
             </motion.div>
         )}

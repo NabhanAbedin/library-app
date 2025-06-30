@@ -68,10 +68,34 @@ const filterByBookModel = async (orderBy) => {
     return rows;
 };
 
+const filterBooksByYear = async (orderBy,from,to) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const fromDate = `${from}-01-01`;
+    const toDate = `${to}-12-31`;
+
+    const {rows} = await pool.query(`
+        SELECT 
+        b.id,
+        b.title AS book_title,
+        a.name AS author_id,
+        g.type AS genre_type,
+        b.release
+        FROM books b
+        JOIN authors a ON b.author_id = a.id
+        JOIN genre g ON b.genre_id = g.id
+        WHERE b.release >= $1
+            AND b.release <= $2
+        ORDER BY b.release ${direction}
+        `,[fromDate,toDate])
+    
+    return rows;
+};
+
 module.exports = {
     addBook,
     viewBooksModel,
     joinTablesForBooks,
     findBySearch,
-    filterByBookModel
+    filterByBookModel,
+    filterBooksByYear
 };

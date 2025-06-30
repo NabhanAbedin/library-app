@@ -61,8 +61,8 @@ export const findBySearch = async (query) => {
     return result;
 };
 
-export const filterByBook = async ({sortBy, orderBy}) => {
-    const res = await fetch(`http://localhost:5001/books/catalog/filter?sortBy=${sortBy}&orderBy=${orderBy}`);
+export const filterByBook = async ({sortBy, orderBy, from, to}) => {
+    const res = await fetch(`http://localhost:5001/books/catalog/filter?sortBy=${sortBy}&orderBy=${orderBy}&from=${from}&to=${to}`);
 
     const result = await res.json();
     return result;

@@ -1,5 +1,5 @@
 const { findAuthorId, addAuthor } = require('../Models/authorsModel');
-const { addBook, viewBooksModel, joinTablesForBooks, findBySearch, filterByBookModel } = require('../Models/BooksModel');
+const { addBook, viewBooksModel, joinTablesForBooks, findBySearch, filterByBookModel, filterBooksByYear } = require('../Models/BooksModel');
 const {findGenreId, addGenre} = require('../Models/genreModel');
 
 
@@ -64,10 +64,14 @@ const viewBooksBySearch = async (req,res) => {
 
 const filterController = async (req,res) => {
     //get the value from the filterBy variable from the url
-    const {sortBy, orderBy} = req.query;
+    const {sortBy, orderBy, from, to} = req.query;
 
     if (sortBy === 'books') {
-        const result = await filterByBookModel(orderBy);
+        if (from === 'null' && to==='null') {
+            const result = await filterByBookModel(orderBy);
+            return res.json(result);
+        };
+        const result = await filterBooksByYear(orderBy,from,to);
         res.json(result);
     }
 }
