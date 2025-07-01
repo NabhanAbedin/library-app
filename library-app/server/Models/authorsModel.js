@@ -20,9 +20,28 @@ const updateAuthor = async (id,bio = null, age= null) => {
     return rowCount === 1;
 };
 
+const findAllAuthors = async () => {
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM authors
+        `);
+    return rows;
+};
+
+const searchAuthorsModel = async (query) => {
+    const searchQuery = `%${query}%`
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM authors 
+        WHERE authors.title ILIKE $1
+        `,[searchQuery]);
+};
+
 
 module.exports = {
     findAuthorId,
     addAuthor,
-    updateAuthor
+    updateAuthor,
+    findAllAuthors,
+    searchAuthorsModel
 };

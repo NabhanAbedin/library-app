@@ -62,7 +62,7 @@ const viewBooksBySearch = async (req,res) => {
     }
 };
 
-const filterController = async (req,res) => {
+const catalogBooksController = async (req,res) => {
     //get the value from the filterBy variable from the url
     const {sortBy, orderBy, from, to} = req.query;
 
@@ -82,5 +82,5 @@ module.exports = {
     viewBooks,
     viewAllBooksData,
     viewBooksBySearch,
-    filterController
+    catalogBooksController
 }

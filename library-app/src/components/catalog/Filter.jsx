@@ -39,12 +39,14 @@ const Filter = ({setData}) => {
         orderBy: 'descending',
         from: null,
         to: null
-        
     });
     const [inputFrom , setInputFrom] = useState('');
     const [inputTo , setInputTo] = useState('');
+    //add params here to check which components to add
 
     useEffect(()=> {
+        //have to fix this because this is being called on the initial render 
+        //have the render be done here
         const fetchData = async () => {
             try {
                 const result = await filterByBook(filterData);
@@ -52,8 +54,7 @@ const Filter = ({setData}) => {
                 setData(result);
             } catch (err) {
                 console.log(err);
-            }
-
+            };
         };
         fetchData();
     },[filterData])

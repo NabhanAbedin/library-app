@@ -1,9 +1,9 @@
 import Nav from "../nav";
 import {NavLink, useSearchParams} from 'react-router-dom';
 import {motion} from 'framer-motion';
-import { useState } from "react";
 import CatalogPlaceholder from "./PlaceHolder";
 import BooksCatalog from "./BooksCatalog";
+import AuthorsCatalog from "./AuthorsCatalog";
 import '../../Styles/catalog.css';
 
 const Catalog = () => {
@@ -12,6 +12,7 @@ const Catalog = () => {
 
     const renderComponent = () => {
         if (selected === 'books') return <BooksCatalog />
+        else if (selected === 'authors') return <AuthorsCatalog />
         else return <CatalogPlaceholder />
     }
 

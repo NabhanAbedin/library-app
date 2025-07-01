@@ -67,3 +67,18 @@ export const filterByBook = async ({sortBy, orderBy, from, to}) => {
     const result = await res.json();
     return result;
 };
+
+export const viewAllAuthors = async () => {
+    const res = await fetch('http://localhost:5001/authors/catalog');
+
+    const result = await res.json();
+    console.log(result);
+    return result;
+};
+
+export const findAuthorsBySearch = async (query) => {
+    const res = await fetch(`http://localhost:5001/authors/catalog/search?query=${encodeURIComponent(query)}`);
+
+    const result = res.json();
+    return result;
+}

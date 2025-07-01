@@ -1,30 +1,29 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect,  } from "react";
 import SearchCatalog from "./searchCatalog";
-import { viewAllBooks, findBySearch ,formatRelease } from "../../api/apiFunctions";
+import {  viewAllAuthors, findAuthorsBySearch  } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
 
 
-const BooksTable = ({books}) => {
+const AuthorsTable = ({authors}) => {
     return (
     <div className="books-table-container">
         <table className="books-table">
             <thead>
                 <tr>
-                    <th>Title</th>
                     <th>Author</th>
-                    <th>Genre</th>
-                    <th>Release Date</th>
+                    <th>Bio</th>
+                    <th>Age</th>
+
                 </tr>
             </thead>
             <tbody>
-                {books.map(book => (
-                    <tr key={book.id}>
-                        <td className="book-title-cell">{book.book_title}</td>
-                        <td className="book-author-cell">{book.author_name}</td>
+                {authors.map(authors => (
+                    <tr key={authors.id}>
+                        <td className="book-title-cell">{authors.name}</td>
+                        <td className="book-author-cell">{authors.bio}</td>
                         <td className="book-genre-cell">
-                            <span className="book-genre-tag">{book.genre_type}</span>
+                            <span className="book-genre-tag">{authors.age}</span>
                         </td>
-                        <td className="book-release-cell">{formatRelease(book.release)}</td>
                     </tr>
                 ))}
             </tbody>
@@ -33,26 +32,23 @@ const BooksTable = ({books}) => {
     );
 };
 
-const BooksCatalog = () => {
+const AuthorsCatalog = () => {
     const [ query, setQuery ] = useState(null);
     const [ data, setData ] = useState(null);
-    
-    //search useEffect
+ 
     useEffect(()=> {
         console.log("🔍 useEffect fired, query =", query)
         const fetchData = async () => {
             if (!query) {
-                const result = await viewAllBooks();
-                setData(result);
+                const result = await viewAllAuthors();
+                setData(result)
                 return;
             } 
-            const result = await findBySearch(query);
+            const result = await findAuthorsBySearch(query);
             setData(result);
         };
      fetchData();
     },[query])
-
-    //filter useeffect
 
     return (
         <motion.div 
@@ -62,11 +58,11 @@ const BooksCatalog = () => {
         transition={{ duration: 0.3, ease: 'easeOut' }}
         >
             <SearchCatalog setQuery={setQuery} setData={setData}/>
-            {data && <BooksTable books={data}/>}
+            {data && <AuthorsTable authors={data}/>}
              
         
         </motion.div>
     );
 };
 
-export default BooksCatalog;
+export default AuthorsCatalog;

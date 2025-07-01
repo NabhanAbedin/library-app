@@ -1,4 +1,4 @@
-const {findAuthorId, addAuthor, updateAuthor} = require('../Models/authorsModel');
+const {findAuthorId, addAuthor, updateAuthor, findAllAuthors, searchAuthorsModel} = require('../Models/authorsModel');
 
 const addAuthorController = async (req, res) => {
     let {name, bio, age } = req.body;
@@ -27,7 +27,29 @@ const addAuthorController = async (req, res) => {
     };
 };
 
+const findAllAuthorsController = async (req,res) => {
+    try {
+        const result = await findAllAuthors();
+
+        res.json(result);
+    } catch (err) {
+        return res.status(404).json('authors not found');
+    }
+};
+
+const searchAuthorsController = async (req,res) => {
+    try {
+        const {query} = req.query;
+        const result = searchAuthorsModel(query);
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+    };
+};
+
 
 module.exports = {
-    addAuthorController
+    addAuthorController,
+    findAllAuthorsController,
+    searchAuthorsController
 }
