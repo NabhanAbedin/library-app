@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {motion} from 'framer-motion';
-import Filter from "./Filter";
 import { NavLink, useSearchParams } from "react-router-dom";
 
 const SearchCatalog = ({setQuery, setData}) => {
@@ -22,7 +21,6 @@ const SearchCatalog = ({setQuery, setData}) => {
                 transition={{ type: "spring", stiffness: 300 }}
                 >search</motion.button>
                 </NavLink>
-            <Filter setData={setData}/>
         </div>
     );
 };

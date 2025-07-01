@@ -46,23 +46,23 @@ export const addAuthor = async ({name, bio, age}) => {
     return res;
 };
 
-export const viewAllBooks = async () => {
-    const res = await fetch('http://localhost:5001/books/catalog');
+// export const viewAllBooks = async () => {
+//     const res = await fetch('http://localhost:5001/books/catalog');
 
-    const result = await res.json();
-    console.log(result);
-    return result;
-};
+//     const result = await res.json();
+//     console.log(result);
+//     return result;
+// };
 
 export const findBySearch = async (query) => {
-    const res = await fetch(`http://localhost:5001/books/catalog/search?query=${encodeURIComponent(query)}`);
+     const res = await fetch(`http://localhost:5001/books/catalog/search?query=${encodeURIComponent(query)}`);
 
-    const result = await res.json();
-    return result;
+     const result = await res.json();
+     return result;
 };
 
-export const filterByBook = async ({sortBy, orderBy, from, to}) => {
-    const res = await fetch(`http://localhost:5001/books/catalog/filter?sortBy=${sortBy}&orderBy=${orderBy}&from=${from}&to=${to}`);
+export const catalogBooks = async ({sortBy, orderBy, from, to}) => {
+    const res = await fetch(`http://localhost:5001/books/catalog?sortBy=${sortBy}&orderBy=${orderBy}&from=${from}&to=${to}`);
 
     const result = await res.json();
     return result;
@@ -79,6 +79,6 @@ export const viewAllAuthors = async () => {
 export const findAuthorsBySearch = async (query) => {
     const res = await fetch(`http://localhost:5001/authors/catalog/search?query=${encodeURIComponent(query)}`);
 
-    const result = res.json();
+    const result = await res.json();
     return result;
-}
+};

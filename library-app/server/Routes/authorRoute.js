@@ -4,9 +4,8 @@ const ctrl = require('../Controllers/authorsController');
 
 router.post('/add', ctrl.addAuthorController);
 
-router.get('/catalog', ctrl.findAllAuthorsController);
+router.get('/catalog', ctrl.AuthorsController);
 
-router.post('/catalog/search', ctrl.searchAuthorsController )
-
+router.get('/catalog/search', ctrl.searchAuthorsController);
 
 module.exports = router;

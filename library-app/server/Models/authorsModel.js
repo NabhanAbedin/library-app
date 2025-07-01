@@ -33,8 +33,10 @@ const searchAuthorsModel = async (query) => {
     const {rows} = await pool.query(`
         SELECT *
         FROM authors 
-        WHERE authors.title ILIKE $1
+        WHERE authors.name ILIKE $1
         `,[searchQuery]);
+    
+    return rows;
 };
 
 

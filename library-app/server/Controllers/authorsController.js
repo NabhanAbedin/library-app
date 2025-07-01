@@ -27,7 +27,7 @@ const addAuthorController = async (req, res) => {
     };
 };
 
-const findAllAuthorsController = async (req,res) => {
+const AuthorsController = async (req,res) => {
     try {
         const result = await findAllAuthors();
 
@@ -38,9 +38,11 @@ const findAllAuthorsController = async (req,res) => {
 };
 
 const searchAuthorsController = async (req,res) => {
+    console.log('/get search authors called');
     try {
         const {query} = req.query;
-        const result = searchAuthorsModel(query);
+        const result = await searchAuthorsModel(query);
+        console.log(result);
         res.json(result);
     } catch (err) {
         console.log(err);
@@ -50,6 +52,6 @@ const searchAuthorsController = async (req,res) => {
 
 module.exports = {
     addAuthorController,
-    findAllAuthorsController,
+    AuthorsController,
     searchAuthorsController
 }
