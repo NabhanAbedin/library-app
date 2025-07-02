@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import {  useRef } from "react";
 
 const SortByYear = ({inputFrom, setInputFrom, inputTo, setInputTo, setFilterData}) => {
     const containerRef = useRef(null);

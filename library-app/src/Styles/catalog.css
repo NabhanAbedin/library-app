@@ -21,13 +21,22 @@ body {
     line-height: 1.1;
 }
 
-.catalog-header p {
+.catalog-header h3 {
     font-size: 1.3rem;
     color: #525252;
     line-height: 1.6;
     font-weight: 300;
     max-width: 550px;
     margin: 0 auto;
+}
+
+.catalog-header p {
+    font-size: 1rem;
+    color: #525252;
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 550px;
+    margin: 1% 1%;
 }
 
 .select-container {
@@ -78,6 +87,8 @@ body {
 
 /* Updated CSS for proper layout distribution */
 
+/* Updated CSS for proper layout distribution */
+
 .books-catalog-container {
     margin: 3rem 5% 2rem 5%;
 }
@@ -95,7 +106,6 @@ body {
     width: 100%;
     max-width: 600px;
     display: flex; /* Add this */
-    align-items: center;
     gap: 1rem; /* Add this */
     align-items: center; /* Add this */
     /* Remove background-color: lightblue; */
@@ -161,6 +171,7 @@ body {
 }
 
 
+
 /* filter section */
 .filter-button {
     width: 25px;
@@ -186,7 +197,7 @@ body {
     position: absolute;
     top: 100%;
     right: 0;
-    z-index: 1000;
+    z-index: 2;
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
@@ -215,6 +226,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
+
 
 .filter-section form {
     display: flex;
@@ -281,13 +293,15 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Year inputs styling to match search input */
+/* Add this to your existing CSS to fix the alphabet input styling */
+
+/* Year inputs styling - keep existing */
 .years-input-container {
     display: flex;
     gap: 0.5rem;
 }
 
-.years-input-container input[type="number"] {
+.years-input-container input {
     flex: 1;
     padding: 0.5rem 1.25rem;
     font-size: 1rem;
@@ -301,8 +315,42 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.years-input-container input[type="number"]:focus {
+.years-input-container input:focus {
     border-color: #3b82f6;
+}
+
+/* NEW: Specific styling for alphabet inputs */
+.alphabet-input-container {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.alphabet-input-container input {
+    width: 40px; /* Fixed width for single letters */
+    height: 40px; /* Fixed height to make them square */
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #0a0a0a;
+    letter-spacing: -0.01em;
+    outline: none;
+    transition: border-color 0.2s ease;
+    text-align: center; /* Center the letter */
+    text-transform: uppercase; /* Auto-uppercase letters */
+}
+
+.alphabet-input-container input:focus {
+    border-color: #3b82f6;
+}
+
+/* Optional: Add placeholder styling for better UX */
+.alphabet-input-container input::placeholder {
+    color: #9ca3af;
+    font-size: 0.875rem;
 }
 
 /* books table */
@@ -417,5 +465,48 @@ body {
         right: -1rem;
         /* min-width removed */
         width: 240px;
+    }
+}
+
+
+/* Checkout button styles - add to your existing CSS */
+
+.checkout-button {
+    display: flex;
+    margin: 2rem 0;
+    padding-bottom: 3%;
+}
+
+.checkout-button button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+    transition: all 0.2s ease;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkout-button {
+        margin: 1.5rem 3%;
+    }
+    
+    .checkout-button button {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        min-width: 160px;
     }
 }

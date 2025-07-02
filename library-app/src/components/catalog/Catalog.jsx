@@ -25,7 +25,8 @@ const Catalog = () => {
             animate={{ opacity: 1, y: 30 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}>
                 <h1>View our growing catalog!</h1>
-                <p>search authors, specfic books, by genre and more!</p>
+                <h3>search authors, specfic books, by genre and more</h3>
+                <p>select the books you want and then we will process and ship them out for you to rent</p>
             </motion.div>
             <motion.nav 
             className="select-container"

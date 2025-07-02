@@ -2,37 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import SearchCatalog from "./searchCatalog";
 import { findBySearch, formatRelease, catalogBooks } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
+import BooksTable from "./BooksTable";
 import Filter from './Filter';
 
-
-const BooksTable = ({books}) => {
-    return (
-    <div className="books-table-container">
-        <table className="books-table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>Release Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {books.map(book => (
-                    <tr key={book.id}>
-                        <td className="book-title-cell">{book.book_title}</td>
-                        <td className="book-author-cell">{book.author_name}</td>
-                        <td className="book-genre-cell">
-                            <span className="book-genre-tag">{book.genre_type}</span>
-                        </td>
-                        <td className="book-release-cell">{formatRelease(book.release)}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-    );
-};
 
 const BooksCatalog = () => {
     const [ query, setQuery ] = useState(null);
@@ -49,8 +21,6 @@ const BooksCatalog = () => {
         console.log("🔍 useEffect fired, query =", query)
         const fetchData = async () => {
             if (!query) {
-                const result = await catalogBooks(filterData);
-                setData(result);
                 return;
             } 
             const result = await findBySearch(query);
@@ -74,6 +44,8 @@ const BooksCatalog = () => {
         };
         fetchData();
     },[filterData])
+
+    
 
     return (
         <motion.div 

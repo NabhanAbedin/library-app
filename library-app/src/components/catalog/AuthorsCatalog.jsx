@@ -47,8 +47,6 @@ const AuthorsCatalog = () => {
         console.log("🔍 useEffect fired, query =", query)
         const fetchData = async () => {
             if (!query) {
-                const result = await viewAllAuthors();
-                setData(result)
                 return;
             }  
             const result = await findAuthorsBySearch(query);
@@ -61,7 +59,8 @@ const AuthorsCatalog = () => {
         
         const fetchData = async () => {
             try {
-                const result = await catalogBooks(filterData);
+                //adjust this function in the backend so it takes the filter data and does it in all one controller
+                const result = await viewAllAuthors();
                 console.log(result)
                 setData(result);
             } catch (err) {
@@ -69,7 +68,14 @@ const AuthorsCatalog = () => {
             };
         };
         fetchData();
-    },[filterData])
+    },[filterData]);
+
+    useEffect(()=> {
+        if (filterData.to || filterData.from) {
+            filterData.to = null;
+            filterData.from = null;
+        }
+    },[]);
 
     return (
         <motion.div 
@@ -78,8 +84,10 @@ const AuthorsCatalog = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         >
-            <SearchCatalog setQuery={setQuery} setData={setData}/>
-            <Filter filterData={filterData} setFilterData={setFilterData}/>
+             <div className="catalog-controls">
+                <SearchCatalog setQuery={setQuery} setData={setData}/>
+                <Filter filterData={filterData} setFilterData={setFilterData}/>
+            </div>
             {data && <AuthorsTable authors={data}/>}
              
         

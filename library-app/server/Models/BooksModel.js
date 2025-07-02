@@ -77,7 +77,7 @@ const filterBooksByYear = async (orderBy,from,to) => {
         SELECT 
         b.id,
         b.title AS book_title,
-        a.name AS author_id,
+        a.name AS author_name,
         g.type AS genre_type,
         b.release
         FROM books b
@@ -91,11 +91,73 @@ const filterBooksByYear = async (orderBy,from,to) => {
     return rows;
 };
 
+const sortBooksByAuthor = async (orderBy) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const {rows} = await pool.query(`
+        SELECT 
+        b.id,
+        b.title AS book_title,
+        a.name AS author_name,
+        g.type AS genre_type,
+        b.release
+        FROM books b
+        JOIN authors a ON b.author_id = a.id
+        JOIN genre g ON b.genre_id = g.id
+        ORDER BY LOWER(a.name) ${direction}
+        `);
+
+    return rows;
+};
+
+const filterAuthorsByAplha = async (orderBy, from, to) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const fromLc = from.toLowerCase();
+    const toLc = to.toLowerCase();
+    const {rows} = await pool.query(`
+        SELECT 
+        b.id,
+        b.title AS book_title,
+        a.name AS author_name,
+        g.type AS genre_type,
+        b.release
+        FROM books b
+        JOIN authors a ON b.author_id = a.id
+        JOIN genre g ON b.genre_id = g.id
+        WHERE LOWER(a.name) BETWEEN $1 AND $2
+        ORDER BY LOWER(a.name) ${direction}
+        `, [fromLc,toLc]);
+
+    return rows;
+};
+
+const sortBooksByGenre = async (orderBy) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const {rows} = await pool.query(`
+        SELECT 
+        b.id,
+        b.title AS book_title,
+        a.name AS author_name,
+        g.type AS genre_type,
+        b.release
+        FROM books b 
+        JOIN authors a ON b.author_id = a.id
+        JOIN genre g ON b.genre_id = g.id
+        ORDER BY LOWER(g.type) ${direction}
+        `);
+    
+    console.log(rows);
+    return rows;
+}
+
+
 module.exports = {
     addBook,
     viewBooksModel,
     joinTablesForBooks,
     findBySearch,
     filterByBookModel,
-    filterBooksByYear
+    filterBooksByYear,
+    sortBooksByAuthor,
+    filterAuthorsByAplha,
+    sortBooksByGenre
 };

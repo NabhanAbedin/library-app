@@ -3,13 +3,15 @@ import squaresImg from '../../images/squares.png';
 import { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion';
 import SortByYear from './SortByYear.jsx';
+import SortByAlpha from "./SortByAlpha";
+import { useSearchParams } from 'react-router-dom';
 
 
 
 const SortBy = ({filterData, setFilterData }) => {
   return (
     <form>
-      {['books', 'author', 'genre'].map(option => (
+      {['books', 'authors', 'genre'].map(option => (
         <label key={option}>
           <input
             type="radio"
@@ -36,8 +38,14 @@ const Filter = ({filterData, setFilterData}) => {
     const [active, setActive] = useState(false);
     const [inputFrom , setInputFrom] = useState('');
     const [inputTo , setInputTo] = useState('');
-    //add params here to check which components to add
+    const [searchParams] = useSearchParams();
 
+    useEffect(()=> {
+        if (filterData.to || filterData.from) {
+            filterData.to = null;
+            filterData.from = null;
+        }
+    },[filterData.sortBy]);
     
 
     return (
@@ -73,9 +81,12 @@ const Filter = ({filterData, setFilterData}) => {
                           </select>
                       </div>
                       <div className='filter-section'>
-                          <SortByYear inputFrom={inputFrom} setInputFrom={setInputFrom}
+                          {filterData.sortBy === 'books' ? (<SortByYear inputFrom={inputFrom} setInputFrom={setInputFrom}
                           inputTo={inputTo} setInputTo={setInputTo}
-                          setFilterData={setFilterData}/>
+                          setFilterData={setFilterData}/>)
+                           : filterData.sortBy === 'authors' ? (<SortByAlpha inputFrom={inputFrom} setInputFrom={setInputFrom}
+                            inputTo={inputTo} setInputTo={setInputTo}
+                            setFilterData={setFilterData}/>) : null}
                           
                       </div>
               </motion.div>

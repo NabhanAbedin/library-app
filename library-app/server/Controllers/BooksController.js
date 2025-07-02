@@ -1,5 +1,5 @@
 const { findAuthorId, addAuthor } = require('../Models/authorsModel');
-const { addBook, viewBooksModel, joinTablesForBooks, findBySearch, filterByBookModel, filterBooksByYear } = require('../Models/BooksModel');
+const { addBook, viewBooksModel, joinTablesForBooks, findBySearch, filterByBookModel, filterBooksByYear, sortBooksByAuthor, filterAuthorsByAplha, sortBooksByGenre } = require('../Models/BooksModel');
 const {findGenreId, addGenre} = require('../Models/genreModel');
 
 
@@ -72,7 +72,17 @@ const catalogBooksController = async (req,res) => {
             return res.json(result);
         };
         const result = await filterBooksByYear(orderBy,from,to);
-        res.json(result);
+        return res.json(result);
+    } else if (sortBy === 'authors') {
+        if (from === 'null' && to==='null') {
+            const result = await sortBooksByAuthor(orderBy);
+            return res.json(result);
+        };
+        const result = await filterAuthorsByAplha(orderBy,from,to);
+        return res.json(result);
+    } else {
+        const result = await sortBooksByGenre(orderBy);
+        return res.json(result);
     }
 }
 
