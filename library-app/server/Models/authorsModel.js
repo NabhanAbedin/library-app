@@ -20,13 +20,29 @@ const updateAuthor = async (id,bio = null, age= null) => {
     return rowCount === 1;
 };
 
-const findAllAuthors = async () => {
+const catalogAuthorsModel = async (orderBy) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
     const {rows} = await pool.query(`
         SELECT *
         FROM authors
+        ORDER BY name ${direction}
         `);
     return rows;
 };
+
+const filterAuthorByAplha = async (orderBy, from, to) => {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const fromLc = from.toLowerCase();
+    const toLc = to.toLowerCase();
+
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM authors
+        WHERE LOWER(name) BETWEEN $1 AND $2
+        ORDER BY LOWER(name) ${direction}
+        `,[fromLc,toLc]);
+    return rows;
+}
 
 const searchAuthorsModel = async (query) => {
     const searchQuery = `%${query}%`
@@ -42,10 +58,13 @@ const searchAuthorsModel = async (query) => {
 
 
 
+
+
 module.exports = {
     findAuthorId,
     addAuthor,
     updateAuthor,
-    findAllAuthors,
+    catalogAuthorsModel,
+    filterAuthorByAplha,
     searchAuthorsModel
 };

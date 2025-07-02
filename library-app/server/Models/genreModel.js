@@ -13,7 +13,31 @@ const addGenre = async (genreName) => {
     return result.rows[0].id;
 };
 
+const catalogGenreModel = async (orderBy) =>  {
+    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM genre
+        ORDER BY type ${direction}
+        `);
+    console.log(rows);
+    return rows;
+};
+
+const searchCatalogGenreModel = async (query) => {
+    const search = `%${query}%`;
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM genre
+        WHERE type ILIKE $1
+        `,[search]);
+    
+    return rows;
+}
+
 module.exports = {
     findGenreId,
-    addGenre
+    addGenre,
+    catalogGenreModel,
+    searchCatalogGenreModel
 };

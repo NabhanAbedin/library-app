@@ -1,4 +1,4 @@
-const {findAuthorId, addAuthor, updateAuthor, findAllAuthors, searchAuthorsModel} = require('../Models/authorsModel');
+const {findAuthorId, addAuthor, updateAuthor, catalogAuthorsModel, filterAuthorByAplha, searchAuthorsModel} = require('../Models/authorsModel');
 
 const addAuthorController = async (req, res) => {
     let {name, bio, age } = req.body;
@@ -27,15 +27,15 @@ const addAuthorController = async (req, res) => {
     };
 };
 
-const AuthorsController = async (req,res) => {
-    try {
-        const result = await findAllAuthors();
+// const AuthorsController = async (req,res) => {
+//     try {
+//         const result = await findAllAuthors();
 
-        res.json(result);
-    } catch (err) {
-        return res.status(404).json('authors not found');
-    }
-};
+//         res.json(result);
+//     } catch (err) {
+//         return res.status(404).json('authors not found');
+//     }
+// };
 
 const searchAuthorsController = async (req,res) => {
     console.log('/get search authors called');
@@ -49,9 +49,24 @@ const searchAuthorsController = async (req,res) => {
     };
 };
 
+const catalogAuthorsController = async (req,res) => {
+    try {
+        const {orderBy, from, to} = req.query;
+        if (from === 'null' && to === 'null') {
+            const result = await catalogAuthorsModel(orderBy);
+            return res.json(result);
+        }
+        const result = await filterAuthorByAplha(orderBy, from, to);
+        return res.json(result);    
+    } catch (err) {
+        console.log(err);
+        res.status(404).json('could not find authors')
+    }
+}
+
 
 module.exports = {
     addAuthorController,
-    AuthorsController,
+    catalogAuthorsController,
     searchAuthorsController
 }

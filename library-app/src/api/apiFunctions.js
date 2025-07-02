@@ -68,17 +68,36 @@ export const catalogBooks = async ({sortBy, orderBy, from, to}) => {
     return result;
 };
 
-export const viewAllAuthors = async () => {
-    const res = await fetch('http://localhost:5001/authors/catalog');
+// export const viewAllAuthors = async () => {
+//     const res = await fetch('http://localhost:5001/authors/catalog');
+
+//     const result = await res.json();
+//     console.log(result);
+//     return result;
+// };
+
+export const catalogAuthors = async ({orderBy, from, to}) => {
+    const res = await fetch(`http://localhost:5001/authors/catalog?orderBy=${orderBy}&from=${from}&to=${to}`);
 
     const result = await res.json();
-    console.log(result);
     return result;
 };
 
 export const findAuthorsBySearch = async (query) => {
     const res = await fetch(`http://localhost:5001/authors/catalog/search?query=${encodeURIComponent(query)}`);
 
+    const result = await res.json();
+    return result;
+};
+
+export const catalogGenre = async ({orderBy}) => {
+    const res = await fetch(`http://localhost:5001/genre/catalog?orderBy=${orderBy}`);
+    const result = await res.json();
+    return result;
+};
+
+export const findGenreBySearch = async (query) => {
+    const res = await fetch (`http://localhost:5001/genre/catalog/search?query=${encodeURIComponent(query)}`);
     const result = await res.json();
     return result;
 };

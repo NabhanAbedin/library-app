@@ -1,38 +1,30 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect,  } from "react";
 import SearchCatalog from "./searchCatalog";
-import { findBySearch, formatRelease, catalogBooks } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
-import BooksTable from "./BooksTable";
-import Filter from '../../filter/Filter';
+import { catalogGenre, findGenreBySearch } from "../../api/apiFunctions.js";
+import Filter from "../../filter/Filter";
+import GenreTable from "./GenreTable";
 
-
-const BooksCatalog = () => {
+const GenreCatalog = () => {
     const [ query, setQuery ] = useState(null);
     const [ data, setData ] = useState(null);
     const [filterData, setFilterData] = useState({
-        sortBy: 'books',
         orderBy: 'ascending',
-        from: null,
-        to: null
     });
-    
-    //search useEffect
+ 
     useEffect(()=> {
         const fetchData = async () => {
             if (!query) {
-                const result = await catalogBooks(filterData);
-                console.log(result)
+                const result = await catalogGenre(filterData);
                 setData(result);
                 return;
-            } 
-            const result = await findBySearch(query);
-            console.log(result);
+            }  
+            const result = await findGenreBySearch(query);
             setData(result);
         };
      fetchData();
     },[query, filterData])
 
-    
     return (
         <motion.div 
         className="books-catalog-container"
@@ -40,15 +32,15 @@ const BooksCatalog = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         >
-            <div className="catalog-controls">
+             <div className="catalog-controls">
                 <SearchCatalog setQuery={setQuery} setData={setData}/>
                 <Filter filterData={filterData} setFilterData={setFilterData}/>
             </div>
-            {data && <BooksTable books={data}/>}
+            {data && <GenreTable genre={data}/>}
              
         
         </motion.div>
     );
 };
 
-export default BooksCatalog;
+export default GenreCatalog;

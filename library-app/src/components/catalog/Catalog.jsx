@@ -4,6 +4,7 @@ import {motion} from 'framer-motion';
 import CatalogPlaceholder from "./PlaceHolder";
 import BooksCatalog from "./BooksCatalog";
 import AuthorsCatalog from "./AuthorsCatalog";
+import GenreCatalog from "./GenreCatalog";
 import '../../Styles/catalog.css';
 
 const Catalog = () => {
@@ -13,6 +14,7 @@ const Catalog = () => {
     const renderComponent = () => {
         if (selected === 'books') return <BooksCatalog />
         else if (selected === 'authors') return <AuthorsCatalog />
+        else if (selected === 'genres') return <GenreCatalog />
         else return <CatalogPlaceholder />
     }
 

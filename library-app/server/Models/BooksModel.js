@@ -145,7 +145,6 @@ const sortBooksByGenre = async (orderBy) => {
         ORDER BY LOWER(g.type) ${direction}
         `);
     
-    console.log(rows);
     return rows;
 }
 
