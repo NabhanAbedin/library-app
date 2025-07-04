@@ -1,7 +1,54 @@
 import {Link} from 'react-router-dom';
 import '../styles/nav.css';
+import { useState, useEffect } from 'react';
+import { checkLoggedIn, logOut } from '../api/apiFunctions';
+
 
 const Nav = () => {
+  //later have a function that checks if the user is signed in to display the correct text
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      try {
+        const res = await checkLoggedIn();
+        if (res.status === 200) {
+          setLoggedIn(true);
+          console.log('logged in true');
+        } else {
+          console.log('error');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  },[]);
+
+  const handleLogInNav = () => {
+    if (loggedIn) {
+      return (
+        <button className='nav-link' onClick={async () => {
+          try {
+            await logOut();
+            setLoggedIn(false)
+          } catch (err) {
+            console.log(err);
+          }
+        }}>
+            Log out
+        </button>
+       
+      )
+    }
+    return (
+      <Link to='/Login' className='nav-link'>
+      Log in
+      </Link>
+    )
+  }
+
+
   return (
     <nav className="nav">
       <div className="nav-container">
@@ -19,6 +66,7 @@ const Nav = () => {
             <Link to='/myCollection' className="nav-link">
               My collection
             </Link>
+            {handleLogInNav()}
           </div>
           
           <button className="nav-mobile-btn">

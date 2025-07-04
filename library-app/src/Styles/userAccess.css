@@ -1,0 +1,10 @@
+.form-header {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.form-header h1 {
+    color: black;
+    font-size: 30px;
+}

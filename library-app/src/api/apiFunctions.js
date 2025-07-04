@@ -101,3 +101,41 @@ export const findGenreBySearch = async (query) => {
     const result = await res.json();
     return result;
 };
+
+export const logIn = async (username, password) => {
+    const res = await fetch('http://localhost:5001/auth/login', {
+       method: 'POST',
+       headers: {'Content-type': 'application/json'},
+       credentials: 'include',
+       body: JSON.stringify({
+        username: username,
+        password: password
+       })
+
+    });
+
+    const result = await res.json();
+    console.log(result);
+    return res;
+};
+
+export const logOut = async () => {
+    const res = await fetch('http://localhost:5001/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+    });
+
+    const result = await res.json();
+    console.log(result);
+    return res;
+}
+
+ 
+export const checkLoggedIn = async () => {
+    const res = await fetch('http://localhost:5001/auth/check',{
+        method: 'POST',
+        credentials: 'include'
+    });
+
+    return res;
+}
