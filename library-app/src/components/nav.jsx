@@ -1,28 +1,18 @@
 import {Link} from 'react-router-dom';
 import '../styles/nav.css';
 import { useState, useEffect } from 'react';
-import { checkLoggedIn, logOut } from '../api/apiFunctions';
+import { logOut } from '../api/apiFunctions';
+import { useAuth } from '../AuthContext';
 
 
 const Nav = () => {
-  //later have a function that checks if the user is signed in to display the correct text
   const [loggedIn, setLoggedIn] = useState(false);
+  const{user, logOutClient} = useAuth();
 
   useEffect(()=> {
-    const fetchData = async () => {
-      try {
-        const res = await checkLoggedIn();
-        if (res.status === 200) {
-          setLoggedIn(true);
-          console.log('logged in true');
-        } else {
-          console.log('error');
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+          if (user) {
+            setLoggedIn(true);
+          }
   },[]);
 
   const handleLogInNav = () => {
@@ -31,7 +21,8 @@ const Nav = () => {
         <button className='nav-button' onClick={async () => {
           try {
             await logOut();
-            setLoggedIn(false)
+            setLoggedIn(false);
+            logOutClient();
           } catch (err) {
             console.log(err);
           }

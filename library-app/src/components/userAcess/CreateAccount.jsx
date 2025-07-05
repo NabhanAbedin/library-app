@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { logIn, createAccount } from "../../api/apiFunctions.js";
 import '../../Styles/addContent.css';
 import '../../Styles/userAccess.css';
+import { useAuth } from "../../AuthContext.jsx";
 
 const CreateAccount = () => {
     const [loggedIn, setLoggedIn] = useState(null);
@@ -13,6 +14,7 @@ const CreateAccount = () => {
         password: ''
     })
     const navigate = useNavigate();
+    const {logIn} = useAuth();
 
     const handleChange = (e) => {
         const {name, value } = e.target;
@@ -30,6 +32,11 @@ const CreateAccount = () => {
                 const {res,result} = await logIn(createInfo.username, createInfo.password);
                 if (res.ok) {
                     setLoggedIn(true);
+                    logIn({
+                        id: result.userId,
+                        username: result.username,
+                        role: result.role
+                    });
                 };
             };
         };

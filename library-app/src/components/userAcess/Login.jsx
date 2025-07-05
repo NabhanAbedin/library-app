@@ -6,6 +6,7 @@ import { logIn } from "../../api/apiFunctions.js";
 import '../../Styles/addContent.css';
 import '../../Styles/userAccess.css';
 import InValid from "./invalid.jsx";
+import { useAuth } from "../../AuthContext.jsx";
 
 const Login = () => {
     const [loggedIn, setLoggedIn] = useState(null);
@@ -14,6 +15,7 @@ const Login = () => {
         password: ''
     })
     const navigate = useNavigate();
+    const {logInClient} = useAuth();
 
     const handleChange = (e) => {
         const {name, value } = e.target;
@@ -28,6 +30,11 @@ const Login = () => {
             const {res,result} = await logIn(loginInfo.username, loginInfo.password);
             if (res.ok) {
                 setLoggedIn(true);
+                logInClient({
+                    id: result.userId,
+                    username: result.username,
+                    role: result.role
+                });
             } else if (result.error === 'invalid username') {
                 setLoggedIn('usernameError');
             } else if (result.error === 'invalid password') {
