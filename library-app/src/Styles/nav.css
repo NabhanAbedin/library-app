@@ -63,6 +63,18 @@
     width: 24px;
     height: 24px;
   }
+
+  .nav-button {
+    background-color: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 15px;
+
+  }
+
+  .nav-button:hover {
+    cursor: pointer;
+  }
   
   @media (min-width: 768px) {
     .nav-links {

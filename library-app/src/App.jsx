@@ -3,6 +3,7 @@ import Library from './components/library/Library';
 import AddContent from './components/addContent/AddContent';
 import Catalog from './components/catalog/Catalog';
 import Login from './components/userAcess/Login';
+import CreateAccount from './components/userAcess/CreateAccount';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Route path='/addContent' element={<AddContent />} />
       <Route path='/Catalog' element={<Catalog />} />
       <Route path='/Login' element={<Login />} />
+      <Route path='/CreateAccount' element={<CreateAccount />} />
      </Routes>
   )
 }

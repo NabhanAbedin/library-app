@@ -102,6 +102,23 @@ export const findGenreBySearch = async (query) => {
     return result;
 };
 
+export const createAccount = async (username, password) => {
+    const res = await fetch('http://localhost:5001/auth/register', {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+         username: username,
+         password: password
+        })
+ 
+     });
+
+    const result = await res.json();
+    console.log(result);
+    return res;
+}
+
 export const logIn = async (username, password) => {
     const res = await fetch('http://localhost:5001/auth/login', {
        method: 'POST',
@@ -116,7 +133,7 @@ export const logIn = async (username, password) => {
 
     const result = await res.json();
     console.log(result);
-    return res;
+    return { res, result };
 };
 
 export const logOut = async () => {

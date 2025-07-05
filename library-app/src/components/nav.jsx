@@ -28,7 +28,7 @@ const Nav = () => {
   const handleLogInNav = () => {
     if (loggedIn) {
       return (
-        <button className='nav-link' onClick={async () => {
+        <button className='nav-button' onClick={async () => {
           try {
             await logOut();
             setLoggedIn(false)

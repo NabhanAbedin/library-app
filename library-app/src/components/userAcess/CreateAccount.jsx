@@ -1,15 +1,14 @@
 import Nav from "../nav";
 import { useState,useEffect} from "react";
 import {motion} from 'framer-motion';
-import { useNavigate, Link } from "react-router-dom";
-import { logIn } from "../../api/apiFunctions.js";
+import { useNavigate } from "react-router-dom";
+import { logIn, createAccount } from "../../api/apiFunctions.js";
 import '../../Styles/addContent.css';
 import '../../Styles/userAccess.css';
-import InValid from "./invalid.jsx";
 
-const Login = () => {
+const CreateAccount = () => {
     const [loggedIn, setLoggedIn] = useState(null);
-    const [loginInfo, setLoginInfo] = useState({
+    const [createInfo, setCreateInfo] = useState({
         username: '',
         password: ''
     })
@@ -17,24 +16,24 @@ const Login = () => {
 
     const handleChange = (e) => {
         const {name, value } = e.target;
-        setLoginInfo(prev => ({...prev,
+        setCreateInfo(prev => ({...prev,
              [name]:value
             }))
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (loginInfo.username.trim() !== '' && loginInfo.password.trim() !== '') {
-            const {res,result} = await logIn(loginInfo.username, loginInfo.password);
-            if (res.ok) {
-                setLoggedIn(true);
-            } else if (result.error === 'invalid username') {
-                setLoggedIn('usernameError');
-            } else if (result.error === 'invalid password') {
-                setLoggedIn('passwordError');
-            }
-        } 
-    };
+         if (createInfo.username.trim() !== '' && createInfo.password.trim() !== '') {
+            
+            const createRes = await createAccount(createInfo.username, createInfo.password);
+            if (createRes.ok) {
+                const {res,result} = await logIn(createInfo.username, createInfo.password);
+                if (res.ok) {
+                    setLoggedIn(true);
+                };
+            };
+        };
+    };  
 
     useEffect(()=> {
         if (loggedIn === true) {
@@ -53,7 +52,7 @@ const Login = () => {
              transition={{ duration: 0.8, ease: 'easeOut' }}
             >   
                 <div className="form-header">
-                    <h1>Log in to our library</h1>
+                    <h1>Create an Account to lease our library</h1>
                 </div>
                 <div>
                     <label htmlFor="username">username:</label>
@@ -61,10 +60,9 @@ const Login = () => {
                     type="text"
                     id="username"
                     name="username"
-                    value={loginInfo.username}
+                    value={createInfo.username}
                     onChange={handleChange}
                      />
-                     {loggedIn === 'usernameError' ? <InValid invalidName={'password'}/> : null}
                 </div>
                 <div>
                     <label htmlFor="password">password:</label>
@@ -72,29 +70,23 @@ const Login = () => {
                     type="password"
                     id="password"
                     name="password"
-                    value={loginInfo.password}
+                    value={createInfo.password}
                     onChange={handleChange}
                      />
-                     {loggedIn === 'passwordError' ? <InValid invalidName={'username'}/> : null}
                 </div>
                 <motion.button 
                 type="submit"
                 whileTap={{ scale: 0.98 }}
                 whileHover={{ scale: 1.01 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                >Log in</motion.button>
-
-                <div className="create-container">
-                    <p>Dont Have an account with us? create one <Link to='/CreateAccount'>
-                    here
-                    </Link></p>
-                </div>
+                >Create</motion.button>
 
             </motion.form>
         
         </>
     );
+
 };
 
 
-export default Login;
+export default CreateAccount;
