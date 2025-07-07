@@ -6,6 +6,7 @@ const addBooksRoute = require('./Routes/BooksRoute');
 const authorRoutes = require('./Routes/authorRoute');
 const genreRoutes = require('./Routes/genreRoute');
 const authRoutes = require('./Routes/authRoute');
+const myCollectionRoutes = require('./Routes/myCollectionRoute');
 const cookieParser = require('cookie-parser');
 
 
@@ -24,6 +25,8 @@ app.use('/authors', authorRoutes );
 app.use('/genre', genreRoutes);
 
 app.use('/auth', authRoutes);
+
+app.use('/myCollection', myCollectionRoutes);
 
 app.listen(5001, ()=> {
     console.log('server started');

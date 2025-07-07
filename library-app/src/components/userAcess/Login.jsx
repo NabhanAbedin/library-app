@@ -45,7 +45,7 @@ const Login = () => {
 
     useEffect(()=> {
         if (loggedIn === true) {
-            navigate('/Catalog');
+            navigate('/myCollection');
         }
     },[loggedIn])
 
@@ -71,7 +71,7 @@ const Login = () => {
                     value={loginInfo.username}
                     onChange={handleChange}
                      />
-                     {loggedIn === 'usernameError' ? <InValid invalidName={'password'}/> : null}
+                     {loggedIn === 'usernameError' ? <InValid invalidName={'username'}/> : null}
                 </div>
                 <div>
                     <label htmlFor="password">password:</label>
@@ -82,7 +82,7 @@ const Login = () => {
                     value={loginInfo.password}
                     onChange={handleChange}
                      />
-                     {loggedIn === 'passwordError' ? <InValid invalidName={'username'}/> : null}
+                     {loggedIn === 'passwordError' ? <InValid invalidName={'password'}/> : null}
                 </div>
                 <motion.button 
                 type="submit"

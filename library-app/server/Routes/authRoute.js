@@ -9,6 +9,6 @@ router.post('/login',login);
 
 router.post('/logout', requireAuth, logout);
 
-router.post('/check', requireAuth, checkLoggedIn);
+router.get('/check', requireAuth, checkLoggedIn);
 
 module.exports = router;

@@ -4,6 +4,7 @@ import AddContent from './components/addContent/AddContent';
 import Catalog from './components/catalog/Catalog';
 import Login from './components/userAcess/Login';
 import CreateAccount from './components/userAcess/CreateAccount';
+import MyCollection from './components/mycollection/MyCollection';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Route path='/Catalog' element={<Catalog />} />
       <Route path='/Login' element={<Login />} />
       <Route path='/CreateAccount' element={<CreateAccount />} />
+      <Route path='/MyCollection' element={<MyCollection />} />
      </Routes>
   )
 }

@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import '../styles/nav.css';
 import { useState, useEffect } from 'react';
 import { logOut } from '../api/apiFunctions';
@@ -6,23 +6,18 @@ import { useAuth } from '../AuthContext';
 
 
 const Nav = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
   const{user, logOutClient} = useAuth();
 
-  useEffect(()=> {
-          if (user) {
-            setLoggedIn(true);
-          }
-  },[]);
-
   const handleLogInNav = () => {
-    if (loggedIn) {
+    if (user) {
       return (
         <button className='nav-button' onClick={async () => {
-          try {
+          try { 
             await logOut();
-            setLoggedIn(false);
             logOutClient();
+            navigate('/');
+
           } catch (err) {
             console.log(err);
           }
@@ -54,9 +49,11 @@ const Nav = () => {
             <Link to='/Catalog' className="nav-link">
               Catalog
             </Link>
-            <Link to='/myCollection' className="nav-link">
+            {user && (
+              <Link to='/myCollection' className="nav-link">
               My collection
-            </Link>
+              </Link>
+            )}
             {handleLogInNav()}
           </div>
           

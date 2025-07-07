@@ -150,8 +150,30 @@ export const logOut = async () => {
  
 export const checkLoggedIn = async () => {
     const res = await fetch('http://localhost:5001/auth/check',{
-        method: 'POST',
+        method: 'GET',
         credentials: 'include'
+    });
+
+    const result = await res.json();
+    return result;
+};
+
+export const userCarts = async () => {
+    const res = await fetch('http://localhost:5001/myCollection/cart', {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    const result = await res.json();
+    return result;
+};
+
+export const addToCart = async (cart) => {
+    const res = await fetch('http://localhost:5001/myCollection/cart', {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify(cart)
     });
 
     return res;

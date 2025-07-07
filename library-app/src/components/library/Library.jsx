@@ -116,41 +116,7 @@ const Library = () => {
 
           </motion.div>
 
-          <motion.div className="stats-section" variants={fadeInUp}>
-            <div className="stat-item">
-              <motion.h3
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                10,000+
-              </motion.h3>
-              <p>Books Available</p>
-            </div>
-            <div className="stat-item">
-              <motion.h3
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                5,000+
-              </motion.h3>
-              <p>Active Members</p>
-            </div>
-            <div className="stat-item">
-              <motion.h3
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                50+
-              </motion.h3>
-              <p>Genres Available</p>
-            </div>
-          </motion.div>
+         
         </div>
       </motion.section>
     </>

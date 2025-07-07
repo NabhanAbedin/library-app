@@ -1,4 +1,4 @@
-const {createUser, findUserByusername} = require('../Models/authModel');
+const {createUser, findUserByusername, findUserById } = require('../Models/authModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -58,7 +58,9 @@ const logout = async (req,res) => {
 };
 
 const checkLoggedIn = async (req,res) => {
-    return res.sendStatus(200);
+    const userId = req.userId;
+    const user = await findUserById(userId);
+    return res.status(200).json({userId: user.id, username: user.username, role: user.role});
 };
 
 module.exports = {

@@ -1,9 +1,32 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import { checkLoggedIn } from "./api/apiFunctions";
 
 const AuthContext = createContext();
 
 export const AuthProvider =({children}) => {
     const [user,setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=> {
+        const fetchData = async () => {
+            try {
+                const result = await checkLoggedIn();
+                console.log('the result is',result)
+                if (result) (
+                    setUser({
+                        id: result.userId,
+                        username: result.username,
+                        role: result.role
+                    })
+                )
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    },[])
 
     const logInClient = (userData) => {
         setUser(userData);
@@ -14,7 +37,7 @@ export const AuthProvider =({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user,logInClient, logOutClient}}>
+        <AuthContext.Provider value={{user, loading, logInClient, logOutClient}}>
             {children}
         </AuthContext.Provider>
     );

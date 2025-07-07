@@ -1,7 +1,10 @@
 /* Homepage Styles */
 
+
+
 /* Hero Section */
 .hero-section {
+    color: white;
     position: relative;
     height: 100vh;
     display: flex;
@@ -12,6 +15,14 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+  }
+
+  .hero-content h1 {
+    color: white;
+  }
+
+  .hero-subtitle {
+    color: white;
   }
   
   .hero-overlay {
