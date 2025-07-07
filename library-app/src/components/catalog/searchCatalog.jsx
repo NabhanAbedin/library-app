@@ -12,7 +12,7 @@ const SearchCatalog = ({setQuery, setData}) => {
         <div
           className="search-container">
             <input type="text" value={text} onChange={e => setText(e.target.value)}/>
-            <NavLink to={`/catalog?selected=${selected}&search_query=${text}`}>
+            <NavLink to={text ? `/catalog?selected=${selected}&search_query=${text}` : `/catalog?selected=${selected}`}>
                 <motion.button 
                 className="search-button" 
                 onClick={() => setQuery(text)}
