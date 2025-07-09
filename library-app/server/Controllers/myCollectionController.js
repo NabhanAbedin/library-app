@@ -1,4 +1,4 @@
-const {getUserCartModel, addToCartModel} = require('../Models/myCollectionModel');
+const {getUserCartModel, addToCartModel, removeFromCartModel} = require('../Models/myCollectionModel');
 
 const getUserCartController = async (req,res) => {
     try {
@@ -29,10 +29,28 @@ const addToCartController = async (req,res) => {
     } catch (err) {
         console.log(err);
         return res.status(500);
-    }
-}
+    };
+};
+
+const removeFromCartController = async (req,res) => {
+    try {
+        const userId = req.userId;
+        const cart = req.body;
+        const intCart = cart.map(s => parseInt(s,10));
+
+        for (const bookId of intCart) {
+            await removeFromCartModel(bookId, userId);
+        };
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json('couldnt remove from cart');
+    };
+};
 
 module.exports = {
     getUserCartController,
-    addToCartController
+    addToCartController,
+    removeFromCartController
 }

@@ -12,13 +12,15 @@ export const AuthProvider =({children}) => {
             try {
                 const result = await checkLoggedIn();
                 console.log('the result is',result)
-                if (result) (
+                if (result) {
                     setUser({
                         id: result.userId,
                         username: result.username,
                         role: result.role
-                    })
-                )
+                    });
+                } else {
+                    setUser(null);
+                }
             } catch (err) {
                 console.log(err);
             } finally {

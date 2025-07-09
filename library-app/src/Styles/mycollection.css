@@ -29,3 +29,9 @@ p, h1, h2 {
     padding: 0 5%;
     margin-bottom: 50px;
 }
+
+.button-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}

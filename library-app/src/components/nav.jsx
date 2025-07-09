@@ -8,15 +8,18 @@ import { useAuth } from '../AuthContext';
 const Nav = () => {
   const navigate = useNavigate();
   const{user, logOutClient} = useAuth();
+ 
 
   const handleLogInNav = () => {
     if (user) {
       return (
         <button className='nav-button' onClick={async () => {
           try { 
-            await logOut();
-            logOutClient();
-            navigate('/');
+            const res = await logOut();
+            if (res.ok) {
+              logOutClient();
+              navigate('/');
+            }
 
           } catch (err) {
             console.log(err);

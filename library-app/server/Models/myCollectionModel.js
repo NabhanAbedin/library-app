@@ -5,6 +5,7 @@ const getUserCartModel = async (userId) => {
     const {rows} = await pool.query(`
         SELECT 
             c.id,
+            c.book_id,
             u.username AS username,
             b.title AS book_title,
             a.name AS author_name,
@@ -25,10 +26,23 @@ const addToCartModel = async (bookId,userId) => {
         INSERT INTO cart (user_id,book_id)
         VALUES ($1, $2)
         `, [userId, bookId])
-}
+};
+
+const removeFromCartModel = async (bookId,userId) => {
+    await pool.query(`
+        DELETE FROM cart
+        WHERE book_id = $1
+        AND user_id = $2
+        `,[bookId,userId]);
+};
+
+const addToCheckedOutModel = async  () => {
+    
+};
 
 module.exports = {
     getUserCartModel,
-    addToCartModel
+    addToCartModel,
+    removeFromCartModel
 }
 

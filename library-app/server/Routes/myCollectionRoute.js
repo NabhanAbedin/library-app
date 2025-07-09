@@ -8,5 +8,7 @@ router.get('/cart', requireAuth, ctrl.getUserCartController);
 
 router.post('/cart',requireAuth, ctrl.addToCartController);
 
+router.delete('/cart', requireAuth, ctrl.removeFromCartController);
+
 
 module.exports = router;

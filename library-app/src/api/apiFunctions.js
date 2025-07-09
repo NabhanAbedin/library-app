@@ -154,6 +154,10 @@ export const checkLoggedIn = async () => {
         credentials: 'include'
     });
 
+    if (res.status === 401) {
+        return false;
+    }
+
     const result = await res.json();
     return result;
 };
@@ -177,4 +181,15 @@ export const addToCart = async (cart) => {
     });
 
     return res;
-}
+};
+
+export const removeFromCart = async (cart) => {
+    const res = await fetch('http://localhost:5001/myCollection/cart', {
+        method: 'DELETE',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify(cart)
+    });
+
+    return res;
+};
