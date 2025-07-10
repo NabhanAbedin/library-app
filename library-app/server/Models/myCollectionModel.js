@@ -36,13 +36,17 @@ const removeFromCartModel = async (bookId,userId) => {
         `,[bookId,userId]);
 };
 
-const addToCheckedOutModel = async  () => {
-    
+const addToCheckedOutModel = async  (bookId,userId,dueDate) => {
+    await pool.query(`
+        INSERT INTO checked_out (user_id,book_id,due_date)
+        VALUES ($1,$2,$3)
+        `,[bookId,userId,dueDate])
 };
 
 module.exports = {
     getUserCartModel,
     addToCartModel,
-    removeFromCartModel
+    removeFromCartModel,
+    addToCheckedOutModel
 }
 

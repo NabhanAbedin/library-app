@@ -4,9 +4,12 @@ import { Navigate } from 'react-router-dom';
 import '../../Styles/mycollection.css';
 import Nav from '../nav';
 import CartCollection from './CartCollection';
+import Checkout from '../checkout/checkout';
+import { useState } from 'react';
 
 const MyCollection = () => {
     const {user, loading} = useAuth();
+    const [reRender, setReRender] = useState(false);
 
     if (!user && !loading) {
         return <Navigate to='/Login' />
@@ -33,7 +36,7 @@ const MyCollection = () => {
               transition={{duration: 0.5, ease: 'easeIn'}}
               >
                  <h2>Your current cart</h2>
-                 <CartCollection />
+                 <CartCollection reRender={reRender} setReRender={setReRender}/>
              </motion.div>
              <div className='mycollection-container'>
                  <h2>Your current books from us</h2>

@@ -193,3 +193,25 @@ export const removeFromCart = async (cart) => {
 
     return res;
 };
+
+export const getCheckOut = async () => {
+    const res = await fetch('http://localhost:5001/myCollection/checkouted', {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    const result = await res.json();
+    return result;
+};
+
+export const addToCheckOut = async (cart) => {
+    const res = await fetch('http://localhost:5001/myCollection/checkedout', {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify(cart)
+
+    });
+
+    return res;
+}

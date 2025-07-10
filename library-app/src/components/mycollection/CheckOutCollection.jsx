@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { userCarts, removeFromCart, addToCheckOut} from "../../api/apiFunctions";
+import { getCheckOut } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
 
-const CartCollection = ({reRender, setReRender}) => {
+const CheckedOutCollection = ({reRender, setReRender}) => {
     const [data, setData] = useState(null);
     const [cart, setCart] = useState([]);
     
 
     useEffect(()=> {
         const fetchData = async () => {
-            const result = await userCarts();
-            console.log(result);
-            setData(result);
+            // const result = await getCheckOut();
+            // console.log(result);
+            // setData(result);
         }
         fetchData();
     },[]);
@@ -22,6 +22,7 @@ const CartCollection = ({reRender, setReRender}) => {
               ? prev.filter(id => id !== bookId)
               : [...prev, bookId]
           );
+        setReRender(reRender);
     }
 
     const handleSubmit = async () => {
@@ -31,10 +32,7 @@ const CartCollection = ({reRender, setReRender}) => {
         if (res.ok) {
             setData(prev => prev.filter(c => !cart.includes(c.book_id)));
             console.log('success');
-            const result = await addToCheckOut(cart);
-            if (result.ok) {
-                setReRender(reRender);
-            }
+            //const result = await addToCheckedOut()
         }
     }
 
@@ -84,4 +82,4 @@ const CartCollection = ({reRender, setReRender}) => {
     )
 };
 
-export default CartCollection;
+export default CheckedOutCollection;

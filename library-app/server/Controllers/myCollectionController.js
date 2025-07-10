@@ -1,4 +1,4 @@
-const {getUserCartModel, addToCartModel, removeFromCartModel} = require('../Models/myCollectionModel');
+const {getUserCartModel, addToCartModel, removeFromCartModel, addToCheckedOutModel} = require('../Models/myCollectionModel');
 
 const getUserCartController = async (req,res) => {
     try {
@@ -17,7 +17,6 @@ const addToCartController = async (req,res) => {
     try {
         const cart = req.body;
         const intCart = cart.map(s => parseInt(s,10));
-        console.log(intCart);
         const userId = req.userId;
 
         for (const bookId of intCart) {
@@ -49,8 +48,34 @@ const removeFromCartController = async (req,res) => {
     };
 };
 
+const addToCheckedOutController = async (req,res) => {
+    try {
+        const userId = req.userId;
+        const cart = req.body;
+        const intCart = cart.map(s => parseInt(s,10));
+
+        const today = new Date();
+        const nextWeek = new Date(today);
+        nextWeek.setDate(today.getDate() + 7);
+
+        for (const bookId of intCart) {
+            await addToCheckedOutModel(bookId,userId,nextWeek);
+        }
+
+        return res.status(201).json('added to checkedout')
+
+
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json('could not add to checked out');
+    }
+}
+
+
 module.exports = {
     getUserCartController,
     addToCartController,
-    removeFromCartController
+    removeFromCartController,
+    addToCheckedOutController
 }

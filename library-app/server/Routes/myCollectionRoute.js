@@ -10,5 +10,7 @@ router.post('/cart',requireAuth, ctrl.addToCartController);
 
 router.delete('/cart', requireAuth, ctrl.removeFromCartController);
 
+router.post('/checkedout', requireAuth, ctrl.addToCheckedOutController);
+
 
 module.exports = router;
