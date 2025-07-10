@@ -195,7 +195,7 @@ export const removeFromCart = async (cart) => {
 };
 
 export const getCheckOut = async () => {
-    const res = await fetch('http://localhost:5001/myCollection/checkouted', {
+    const res = await fetch('http://localhost:5001/myCollection/checkedout', {
         method: 'GET',
         credentials: 'include'
     });
@@ -215,3 +215,4 @@ export const addToCheckOut = async (cart) => {
 
     return res;
 }
+

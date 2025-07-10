@@ -5,6 +5,7 @@ import '../../Styles/mycollection.css';
 import Nav from '../nav';
 import CartCollection from './CartCollection';
 import Checkout from '../checkout/checkout';
+import CheckedOutCollection from './CheckOutCollection';
 import { useState } from 'react';
 
 const MyCollection = () => {
@@ -40,7 +41,7 @@ const MyCollection = () => {
              </motion.div>
              <div className='mycollection-container'>
                  <h2>Your current books from us</h2>
-                 {/*will put a component here that renders the table and buttons for rented */}
+                 <CheckedOutCollection reRender={reRender} setReRender={setReRender}/>
              </div>
         </>
       )}

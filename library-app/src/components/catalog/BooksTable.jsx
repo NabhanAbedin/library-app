@@ -37,6 +37,7 @@ const BooksTable = ({books}) => {
                     <th>Author</th>
                     <th>Genre</th>
                     <th>Release Date</th>
+                    <th>Available</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +53,9 @@ const BooksTable = ({books}) => {
                             <span className="book-genre-tag">{book.genre_type}</span>
                         </td>
                         <td className="book-release-cell">{formatRelease(book.release)}</td>
+                        <td className="book-genre-cell">
+                            <span className="book-genre-tag">{book.available}</span>
+                        </td>
                     </tr>
                 ))}
             </tbody>

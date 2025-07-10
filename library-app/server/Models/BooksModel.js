@@ -20,7 +20,8 @@ const joinTablesForBooks = async () => {
          b.title AS book_title,
          a.name AS author_name,
          g.type AS genre_type, 
-         b.release FROM books b 
+         b.release FROM books b,
+         b.available AS available
          JOIN authors a ON b.author_id = a.id 
          JOIN genre g ON b.genre_id = g.id 
          ORDER BY b.title DESC
@@ -38,7 +39,8 @@ const findBySearch = async (query) => {
          b.title AS book_title,
          a.name AS author_name,
          g.type AS genre_type, 
-         b.release FROM books b 
+         b.release FROM books b,
+         b.available AS available
          JOIN authors a ON b.author_id = a.id 
          JOIN genre g ON b.genre_id = g.id 
          WHERE b.title ILIKE $1 
@@ -58,7 +60,8 @@ const filterByBookModel = async (orderBy) => {
          b.title AS book_title,
          a.name AS author_name,
          g.type AS genre_type,
-         b.release 
+         b.release,
+         b.available AS available 
          FROM books b
          JOIN authors a ON b.author_id = a.id
          JOIN genre g ON b.genre_id = g.id
@@ -79,7 +82,8 @@ const filterBooksByYear = async (orderBy,from,to) => {
         b.title AS book_title,
         a.name AS author_name,
         g.type AS genre_type,
-        b.release
+        b.release,
+        b.available AS available
         FROM books b
         JOIN authors a ON b.author_id = a.id
         JOIN genre g ON b.genre_id = g.id
@@ -99,7 +103,8 @@ const sortBooksByAuthor = async (orderBy) => {
         b.title AS book_title,
         a.name AS author_name,
         g.type AS genre_type,
-        b.release
+        b.release,
+        b.available AS available
         FROM books b
         JOIN authors a ON b.author_id = a.id
         JOIN genre g ON b.genre_id = g.id
@@ -119,7 +124,8 @@ const filterAuthorsByAplha = async (orderBy, from, to) => {
         b.title AS book_title,
         a.name AS author_name,
         g.type AS genre_type,
-        b.release
+        b.release,
+        b.available AS available
         FROM books b
         JOIN authors a ON b.author_id = a.id
         JOIN genre g ON b.genre_id = g.id
@@ -138,7 +144,8 @@ const sortBooksByGenre = async (orderBy) => {
         b.title AS book_title,
         a.name AS author_name,
         g.type AS genre_type,
-        b.release
+        b.release,
+        b.available AS available
         FROM books b 
         JOIN authors a ON b.author_id = a.id
         JOIN genre g ON b.genre_id = g.id
@@ -146,6 +153,19 @@ const sortBooksByGenre = async (orderBy) => {
         `);
     
     return rows;
+}
+
+const subtractAvailable = async (bookId) => {
+  const { rowCount } = await pool.query(
+    `
+      UPDATE books
+      SET available = available - 1
+      WHERE id = $1
+        AND available >= 1
+    `,
+    [bookId]
+  );
+  return rowCount > 0;
 }
 
 
@@ -158,5 +178,6 @@ module.exports = {
     filterBooksByYear,
     sortBooksByAuthor,
     filterAuthorsByAplha,
-    sortBooksByGenre
+    sortBooksByGenre,
+    subtractAvailable
 };

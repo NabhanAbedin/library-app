@@ -25,16 +25,20 @@ const CartCollection = ({reRender, setReRender}) => {
     }
 
     const handleSubmit = async () => {
-        //take the the cart data, add it to the checkedout cart and then remove it from the cart  
-        console.log('hello');
-        const res = await removeFromCart(cart);
+        const res = await addToCheckOut(cart);
         if (res.ok) {
             setData(prev => prev.filter(c => !cart.includes(c.book_id)));
             console.log('success');
-            const result = await addToCheckOut(cart);
+            const result = await removeFromCart(cart);
             if (result.ok) {
-                setReRender(reRender);
+                setReRender(prev => !prev);
             }
+        } else if (res.status === 409) {
+            alert('You cannot check out more than 5 books at a time');
+            setCart([]);
+        } else if (res.status === 422) {
+            alert('one of the books isnt available');
+            setCart([]);
         }
     }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCheckOut } from "../../api/apiFunctions";
+import { getCheckOut, formatRelease } from "../../api/apiFunctions";
 import {motion} from 'framer-motion';
 
 const CheckedOutCollection = ({reRender, setReRender}) => {
@@ -9,32 +9,12 @@ const CheckedOutCollection = ({reRender, setReRender}) => {
 
     useEffect(()=> {
         const fetchData = async () => {
-            // const result = await getCheckOut();
-            // console.log(result);
-            // setData(result);
+             const result = await getCheckOut();
+             console.log(result)
+             setData(result);
         }
         fetchData();
-    },[]);
-
-    const handleCart = (bookId) => {
-        setCart(prev =>
-            prev.includes(bookId)
-              ? prev.filter(id => id !== bookId)
-              : [...prev, bookId]
-          );
-        setReRender(reRender);
-    }
-
-    const handleSubmit = async () => {
-        //take the the cart data, add it to the checkedout cart and then remove it from the cart  
-        console.log('hello');
-        const res = await removeFromCart(cart);
-        if (res.ok) {
-            setData(prev => prev.filter(c => !cart.includes(c.book_id)));
-            console.log('success');
-            //const result = await addToCheckedOut()
-        }
-    }
+    },[reRender]);
 
     return (
         <>
@@ -46,7 +26,8 @@ const CheckedOutCollection = ({reRender, setReRender}) => {
                         <tr>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Genre</th>
+                            <th>Checked out at</th>
+                            <th>Due date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,22 +40,16 @@ const CheckedOutCollection = ({reRender, setReRender}) => {
                                 <td className="book-title-cell">{data.book_title}</td>
                                 <td className="book-author-cell">{data.author_name}</td>
                                 <td className="book-genre-cell">
-                                    <span className="book-genre-tag">{data.genre_type}</span>
+                                    <span className="book-genre-tag">{formatRelease(data.check_out_at)}</span>
+                                </td>
+                                <td className="book-genre-cell">
+                                    <span className="book-genre-tag">{formatRelease(data.due_date)}</span>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
                </div>
-               <div className="button-container">
-                    <motion.button 
-                    className="search-button" 
-                    onClick={() => handleSubmit()}
-                    whileTap={{ scale: 0.98 }}
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    >submit</motion.button>
-                </div>
                </>
             )}
 

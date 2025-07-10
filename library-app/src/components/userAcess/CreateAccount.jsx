@@ -14,7 +14,7 @@ const CreateAccount = () => {
         password: ''
     })
     const navigate = useNavigate();
-    const {logIn} = useAuth();
+    const {logInClient} = useAuth();
 
     const handleChange = (e) => {
         const {name, value } = e.target;
@@ -32,7 +32,7 @@ const CreateAccount = () => {
                 const {res,result} = await logIn(createInfo.username, createInfo.password);
                 if (res.ok) {
                     setLoggedIn(true);
-                    logIn({
+                    logInClient({
                         id: result.userId,
                         username: result.username,
                         role: result.role
