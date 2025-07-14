@@ -47,7 +47,7 @@ export const getBooks = async () => {
 }
 
 export const addAuthorRequest = async ({name, bio, age}) => {
-    const res = await fetch('http://localhost:5001/authors/add', {
+    const res = await fetch('http://localhost:5001/authors/request', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -58,6 +58,21 @@ export const addAuthorRequest = async ({name, bio, age}) => {
     });
     const result = await res.json();
     console.log(result);
+    return res;
+};
+
+export const addAuthorToCatalog = async (authorRequests) => {
+    const res = await fetch('http://localhost:5001/authors/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            authorRequests
+        })
+    });
+
+    const result = await res.json();
+    console.log(result);
+
     return res;
 };
 
@@ -259,8 +274,8 @@ export const getAllRequests = async () => {
         credentials: 'include'
     })
 
-    const {bookResult, authorResult} = await res.json();
-    return {bookResult, authorResult};
+    const {bookResult, authorsResult} = await res.json();
+    return {bookResult, authorsResult};
 }
 
 export const removeFromRequests = async (cart) => {

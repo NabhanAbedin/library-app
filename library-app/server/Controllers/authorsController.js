@@ -1,21 +1,28 @@
 const {findAuthorId, addAuthor, updateAuthor, catalogAuthorsModel, filterAuthorByAplha, searchAuthorsModel} = require('../Models/authorsModel');
 
 const addAuthorController = async (req, res) => {
-    let {name, bio, age } = req.body;
-
+    const {authorRequests} = req.body;
+    if (authorRequests.length === 0) {
+        return res.status(404).json('no cart found');
+    }
     try {
-        let authorId = await findAuthorId(name);
-        if (!authorId) {
-            authorId = await addAuthor(name);
-        };
-        if (age === '') {
-            age = null;
-        }
-        const result = await updateAuthor(authorId, bio, age);
+        for (const request of authorRequests) {
+            console.log()
+            let {author_name, author_bio, author_age } = request;
 
-        if (!result) {
-            res.status(500).json('could not add author');
-        };
+            let authorId = await findAuthorId(author_name);
+            if (!authorId) {
+                authorId = await addAuthor(author_name);
+            };
+            if (author_age === '') {
+                author_age = null;
+            }
+            const result = await updateAuthor(authorId, author_bio, author_age);
+
+            if (!result) {
+                res.status(500).json('could not add author');
+            };
+        }
 
         return res.status(201).json('added author successfully');
 

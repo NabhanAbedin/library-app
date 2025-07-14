@@ -5,7 +5,7 @@ const {findGenreId, addGenre} = require('../Models/genreModel');
 
 const addBookToCatalog = async (req,res) => {
     const {bookRequests} = req.body;
-    if (bookRequests === 0) {
+    if (bookRequests.length === 0) {
         return res.status(404).json('no cart found');
     }
     console.log(bookRequests);

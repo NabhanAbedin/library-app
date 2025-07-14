@@ -3,7 +3,9 @@ const router = express.Router();
 const ctrl = require('../Controllers/authorsController');
 const requestsCtrl = require('../Controllers/requestsController')
 
-router.post('/add', requestsCtrl.addAuthorRequestController);
+router.post('/add', ctrl.addAuthorController);
+
+router.post('/request', requestsCtrl.addAuthorRequestController);
 
 router.get('/catalog', ctrl.catalogAuthorsController);
 
