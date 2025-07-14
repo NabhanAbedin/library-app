@@ -4,15 +4,12 @@ export const formatRelease = (release) => {
     return splitRelease[0];
 };
 
-export const addBook = async ({title, author, release, genre}) => {
+export const addBookToCatalog = async (bookRequests) => {
     const res = await fetch('http://localhost:5001/books/add', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            title,
-            release,
-            authorName: author,
-            genreName: genre
+            bookRequests
         })
     });
 
@@ -21,6 +18,24 @@ export const addBook = async ({title, author, release, genre}) => {
 
     return res;
 };
+
+export const addBookRequest = async ({title, author, release, genre}) => {
+    const res = await fetch('http://localhost:5001/books/request', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            title,
+            author,
+            release,
+            genre
+        })
+    });
+
+    const result = await res.json();
+    console.log(result);
+
+    return res;
+}
 
 export const getBooks = async () => {
     const res = await fetch('http://localhost:5001/books', {
@@ -31,7 +46,7 @@ export const getBooks = async () => {
     return result;
 }
 
-export const addAuthor = async ({name, bio, age}) => {
+export const addAuthorRequest = async ({name, bio, age}) => {
     const res = await fetch('http://localhost:5001/authors/add', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -212,6 +227,51 @@ export const addToCheckOut = async (cart) => {
         body: JSON.stringify(cart)
 
     });
+
+    return res;
+}
+
+export const adminGetCheckedOut = async () => {
+    const res = await fetch('http://localhost:5001/admin/returns', {
+        method: 'GET',
+        credentials: 'include'
+    })
+
+    const result = await res.json();
+    return result;
+}
+
+export const updateReturn = async (date,cartId, bookId) => {
+    const res = await fetch('http://localhost:5001/admin/returns', {
+        method: 'PUT',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({date, cartId, bookId})
+
+    });
+
+    return res;
+}
+
+export const getAllRequests = async () => {
+    const res = await fetch('http://localhost:5001/admin/requests', {
+        method: 'GET',
+        credentials: 'include'
+    })
+
+    const {bookResult, authorResult} = await res.json();
+    return {bookResult, authorResult};
+}
+
+export const removeFromRequests = async (cart) => {
+    console.log(cart);
+    const res = await fetch(`http://localhost:5001/admin/requests`, {
+        method: 'DELETE',
+        headers: {'Content-type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({cart})
+
+    })
 
     return res;
 }

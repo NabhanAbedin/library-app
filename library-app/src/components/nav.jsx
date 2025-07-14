@@ -57,6 +57,11 @@ const Nav = () => {
               My collection
               </Link>
             )}
+            {user && user.role === 'admin' && (
+              <Link to='/Admin' className="nav-link">
+              Admin Controls
+              </Link>
+            )}
             {handleLogInNav()}
           </div>
           

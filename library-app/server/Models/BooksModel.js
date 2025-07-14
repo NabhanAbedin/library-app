@@ -1,8 +1,8 @@
 const pool = require('../db');
 
 
-const addBook = async (title, authorId, release, genreId) => {
-     const result = await pool.query('INSERT INTO books (title, author_id, genre_id, release) VALUES ($1, $2, $3, $4)',[title,authorId,genreId, release]);
+const addBook = async (title, authorId, release, genreId, available) => {
+     const result = await pool.query('INSERT INTO books (title, author_id, genre_id, release, available) VALUES ($1, $2, $3, $4, $5)',[title,authorId,genreId, release, available]);
 
      return result.rowCount === 1;
 };
@@ -168,6 +168,17 @@ const subtractAvailable = async (bookId) => {
   return rowCount > 0;
 }
 
+const addAvailable = async (bookId) => {
+    const { rowCount } = await pool.query(
+        `
+          UPDATE books
+             SET available = available + 1
+           WHERE id = $1
+        `,
+        [bookId]
+      );
+      return rowCount > 0;
+}
 
 module.exports = {
     addBook,
@@ -179,5 +190,6 @@ module.exports = {
     sortBooksByAuthor,
     filterAuthorsByAplha,
     sortBooksByGenre,
-    subtractAvailable
+    subtractAvailable,
+    addAvailable
 };

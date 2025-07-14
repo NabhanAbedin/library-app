@@ -13,10 +13,10 @@ const requireAuth = (req,res,next) => {
         };
 
         req.userId = payload.userId;
+        req.role = payload.role;
         next();
     });
 };
-
 
 module.exports = {
     requireAuth

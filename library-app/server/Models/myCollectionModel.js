@@ -57,6 +57,7 @@ const getCheckedOutModel = async (userId) => {
         JOIN books b ON c.book_id = b.id
         JOIN authors a ON b.author_id = a.id
         WHERE c.user_id = $1
+         AND c.returned_at IS NULL
         `,[userId]);
 
     return rows;
@@ -67,6 +68,7 @@ const getCheckedOutCount = async (userId) => {
       SELECT COUNT(*) AS count
       FROM checked_out
       WHERE user_id = $1
+      AND returned_at IS NULL
     `, [userId]);
 
     return parseInt(rows[0].count, 10);

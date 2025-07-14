@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {motion} from 'framer-motion';
-import { addAuthor } from "../../api/apiFunctions";
+import { addAuthorRequest } from "../../api/apiFunctions";
 
 const AddAuthor = () => {
     const [ formData, setFormData ] = useState({
@@ -19,7 +19,7 @@ const AddAuthor = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await addAuthor(formData);
+            const res = await addAuthorRequest(formData);
 
             if (res.ok) {
                 setFormData({

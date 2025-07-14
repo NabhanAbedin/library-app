@@ -4,22 +4,30 @@ const {findGenreId, addGenre} = require('../Models/genreModel');
 
 
 const addBookToCatalog = async (req,res) => {
-    const {title, release, authorName, genreName} = req.body;
-
+    const {bookRequests} = req.body;
+    if (bookRequests === 0) {
+        return res.status(404).json('no cart found');
+    }
+    console.log(bookRequests);
+    
     try {
-        let authorId = await findAuthorId(authorName);
-        if (!authorId) {
-            authorId = await addAuthor(authorName);
-        };
-        let genreId = await findGenreId(genreName);
-        if (!genreId) {
-            genreId = await addGenre(genreName);
-        };
-        const result = await addBook(title, authorId, release, genreId);
+        for (const request of bookRequests) {
+            const {title, author, genre, release, available} = request;
 
-        if (!result) {
-            return res.status(500).json('could not add book to database');
-        } 
+            let authorId = await findAuthorId(author);
+            if (!authorId) {
+                authorId = await addAuthor(author);
+            };
+            let genreId = await findGenreId(genre);
+            if (!genreId) {
+                genreId = await addGenre(genre);
+            };
+            const result = await addBook(title, authorId, release, genreId, parseInt(available));
+
+            if (!result) {
+                return res.status(500).json('could not add book to database');
+            } 
+        }
 
         return res.status(201).json('added book successfully');
     } catch (err) {

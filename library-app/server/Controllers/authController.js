@@ -31,7 +31,7 @@ const login = async (req,res) => {
         const valid = await bcrypt.compare(password, user.password_hash);
         if (!valid) return res.status(401).json({error: 'invalid password'});
 
-        const token = await jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: JWT_EXPIRY});
+        const token = await jwt.sign({userId: user.id, role: user.role}, JWT_SECRET, {expiresIn: JWT_EXPIRY});
         
         res.cookie('token', token, {
             httpOnly: true,
