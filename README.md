@@ -43,3 +43,6 @@ List of key features implemented.
 
 - **Lack of Automated Testing**:  
   The application currently lacks unit and integration tests. As a result, some minor runtime errors may be present and future changes could introduce regressions. Adding a test suite and structured error handling would improve reliability.
+
+- **Missing Centralized Error Handling Middleware**:  
+  Error handling is not centralized across the backend. Errors are managed inconsistently within individual routes and controllers, which can lead to duplication or unclear server responses. Implementing a middleware-based approach would improve consistency and debuggability.
