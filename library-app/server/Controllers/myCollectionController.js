@@ -20,9 +20,8 @@ const addToCartController = async (req,res) => {
         const intCart = cart.map(s => parseInt(s,10));
         const userId = req.userId;
 
-        for (const bookId of intCart) {
-            await addToCartModel(bookId,userId);
-        };
+        await addToCartModel(intCart,userId);
+
 
         return res.status(201).json('added to cart');
 
@@ -38,9 +37,7 @@ const removeFromCartController = async (req,res) => {
         const cart = req.body;
         const intCart = cart.map(s => parseInt(s,10));
 
-        for (const bookId of intCart) {
-            await removeFromCartModel(bookId, userId);
-        };
+        await removeFromCartModel(intCart, userId);
 
         return res.sendStatus(201);
     } catch (err) {
@@ -64,13 +61,12 @@ const addToCheckedOutController = async (req,res) => {
         const nextWeek = new Date(today);
         nextWeek.setDate(today.getDate() + 7);
 
-        for (const bookId of intCart) {
-            await addToCheckedOutModel(bookId,userId,nextWeek);
-            const result = await subtractAvailable(bookId);
+       
+        await addToCheckedOutModel(intCart,userId,nextWeek);
+            const result = await subtractAvailable(intCart);
             if (!result) {
                 return res.status(422).json('unavailable');
             }
-        }
 
         return res.status(201).json('added to checkedout')
 

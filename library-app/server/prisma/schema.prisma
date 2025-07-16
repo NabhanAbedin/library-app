@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model authors {
+  id    Int     @id(map: "Authors_pkey") @default(autoincrement())
+  name  String 
+  bio   String?
+  age   Int?
+  books books[]
+}
+
+model books {
+  id          Int           @id(map: "Books_pkey") @default(autoincrement())
+  title       String        
+  author_id   Int
+  genre_id    Int
+  release     DateTime?     @db.Date
+  available   Int?
+  authors     authors       @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "author_id_fk")
+  genre       genre         @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "genre_id_fk")
+  cart        cart[]
+  checked_out checked_out[]
+}
+
+model cart {
+  id      Int   @id(map: "my_collection_pkey") @default(autoincrement())
+  user_id Int
+  book_id Int
+  books   books @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_id_fkey")
+  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fkey")
+}
+
+model checked_out {
+  id           Int       @id @default(autoincrement())
+  book_id      Int
+  user_id      Int
+  check_out_at DateTime  @default(now()) @db.Date
+  due_date     DateTime  @db.Date
+  returned_at  DateTime? @db.Date
+  books        books     @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_id_fkey")
+  users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fkey")
+}
+
+model genre {
+  id    Int     @id(map: "Genre_pkey") @default(autoincrement())
+  type  String
+  books books[]
+}
+
+model requests {
+  id          Int       @id @default(autoincrement())
+  title       String?
+  author      String?
+  genre       String?
+  author_name String?
+  author_bio  String?
+  author_age  Int?
+  release     DateTime? @db.Date
+  type        String?
+}
+
+model users {
+  id            Int           @id @default(autoincrement())
+  username      String        @unique
+  password_hash String?
+  created_at    DateTime      @default(now()) @db.Date
+  role          String?       @default(dbgenerated("USER"))
+  cart          cart[]
+  checked_out   checked_out[]
+}

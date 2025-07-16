@@ -256,12 +256,12 @@ export const adminGetCheckedOut = async () => {
     return result;
 }
 
-export const updateReturn = async (date,cartId, bookId) => {
+export const updateReturn = async (date, checkedOutId, bookId) => {
     const res = await fetch('http://localhost:5001/admin/returns', {
         method: 'PUT',
         headers: {'Content-type': 'application/json'},
         credentials: 'include',
-        body: JSON.stringify({date, cartId, bookId})
+        body: JSON.stringify({date, checkedOutId, bookId})
 
     });
 

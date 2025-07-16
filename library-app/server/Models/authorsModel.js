@@ -1,64 +1,90 @@
-const pool = require('../db');
+const { create } = require('framer-motion/client');
+const prisma = require('../db');
 
 const findAuthorId = async (authorName) => {
-    const result = await pool.query('SELECT id FROM authors WHERE name = $1',[authorName]);
 
-    if (result.rows.length === 0) return null;
-    return result.rows[0].id;
+    const row = await prisma.authors.findFirst({
+        select: {
+            id: true
+        },
+        where: {
+            name: authorName
+        }
+    })
+
+    return row ? row.id : false;
 };
 
 const addAuthor = async (authorName) => {
-    const result = await pool.query('INSERT INTO authors (name) VALUES ($1) RETURNING id', [authorName]);
+    const row = await prisma.authors.create({
+        data: {
+            name: authorName
+        },
+        select: {
+            id: true
+        }
+    })
 
-    return result.rows[0].id;
+    return row.id;
 
 };
 
 const updateAuthor = async (id,bio = null, age= null) => {
-    const {rowCount} = await pool.query('UPDATE authors SET bio = $1, age = $2 WHERE id = $3', [bio,age,id]);
+    const updated = await prisma.authors.update({
+        where: {
+            id: parseInt(id)
+        },
+        data: {
+            bio: bio ? bio : null,
+            age: age? parseInt(age,10) : null
+        }
+    })
 
-    return rowCount === 1;
+    return updated;
 };
 
 const catalogAuthorsModel = async (orderBy) => {
-    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM authors
-        ORDER BY name ${direction}
-        `);
+    const direction = orderBy === 'ascending' ? 'asc' : 'desc';
+    const rows = await prisma.authors.findMany({
+        orderBy: {
+            name: direction
+        }
+    })
     return rows;
 };
 
 const filterAuthorByAplha = async (orderBy, from, to) => {
-    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
+    const direction = orderBy === 'ascending' ? 'asc' : 'desc';
     const fromLc = from.toLowerCase();
     const toLc = to.toLowerCase();
-
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM authors
-        WHERE LOWER(name) BETWEEN $1 AND $2
-        ORDER BY LOWER(name) ${direction}
-        `,[fromLc,toLc]);
+    
+    const rows = await prisma.authors.findMany({
+        orderBy: {
+            name: direction
+        },
+        where: {
+            name: {
+                gte: fromLc,
+                lte: toLc,
+                mode: 'insensitive'
+            }
+        }
+    })
     return rows;
 }
 
 const searchAuthorsModel = async (query) => {
-    const searchQuery = `%${query}%`
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM authors 
-        WHERE authors.name ILIKE $1
-        `,[searchQuery]);
-    
+    const rows = await prisma.authors.findMany({
+       where: {
+        name: {
+            contains: query,
+            mode: 'insensitive'
+        }
+       } 
+    })
+
     return rows;
 };
-
-
-
-
-
 
 module.exports = {
     findAuthorId,

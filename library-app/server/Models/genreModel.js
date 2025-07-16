@@ -1,36 +1,52 @@
-const pool = require('../db');
+const prisma = require('../db');
 
 const findGenreId = async (genreName) => {
-    const result = await pool.query('SELECT id from genre WHERE type = $1', [genreName]);
+    const row = await prisma.genre.findFirst({
+        where: {
+            type: genreName 
+        },
+        select: {
+            id: true
+        }
+    })
 
-    if (result.rows.length === 0) return null;
-    return result.rows[0].id;
+    return row ? row.id : null;
 };
 
 const addGenre = async (genreName) => {
-    const result = await pool.query('INSERT INTO genre (type) VALUES ($1) RETURNING id', [genreName]);
+     const row = prisma.genre.create({
+        data: {
+            type: genreName
+        },
+        select: {
+            id: true
+        }
+    })
 
-    return result.rows[0].id;
+    return row.id;
 };
 
 const catalogGenreModel = async (orderBy) =>  {
-    const direction = orderBy === 'ascending' ? 'ASC' : 'DESC';
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM genre
-        ORDER BY type ${direction}
-        `);
+    const direction = orderBy === 'ascending' ? 'asc' : 'desc';
+    
+    const rows = await prisma.genre.findMany({
+        orderBy: {
+            type: direction
+        }
+    })
     console.log(rows);
     return rows;
 };
 
 const searchCatalogGenreModel = async (query) => {
-    const search = `%${query}%`;
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM genre
-        WHERE type ILIKE $1
-        `,[search]);
+    const rows = await prisma.genre.findMany({
+        where: {
+            type: {
+                contains: query,
+                mode: 'insensitive'
+            }
+        }
+    })
     
     return rows;
 }

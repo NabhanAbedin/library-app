@@ -1,33 +1,48 @@
-const pool = require('../db');
+const prisma = require('../db');
 
 
-const getBooksCheckedOut = async  () => {
-    const {rows} = await pool.query(`
-        SELECT 
-        c.id,
-        b.id AS book_id,
-        u.username AS username,
-        b.title AS book_title,
-        a.name AS author_name,
-        c.check_out_at,
-        c.due_date,
-        c.returned_at
-        FROM checked_out c
-        JOIN users u ON c.user_id = u.id
-        JOIN books b ON c.book_id = b.id
-        JOIN authors a ON b.author_id = a.id
-        ORDER BY u.username
-        `);
-    
-    return rows;
+const getBooksCheckedOut = async () => {
+  const result = await prisma.checked_out.findMany({
+    select: {
+      id: true,
+      check_out_at: true,
+      due_date: true,
+      returned_at: true,
+      books: {
+        select: {
+          id: true,
+          title: true,
+          authors: { select: { name: true } }
+        }
+      },
+      users: { select: { username: true } }
+    },
+    orderBy: {
+      users: { username: 'asc' }
+    }
+  });
+
+  return result.map(r => ({
+    id:            r.id,
+    book_id:       r.books.id,
+    username:      r.users.username,
+    book_title:    r.books.title,
+    author_name:   r.books.authors.name,
+    check_out_at:  r.check_out_at,
+    due_date:      r.due_date,
+    returned_at:   r.returned_at
+  }));
 }
 
-const updateCheckedOut = async (date,cartId) => {
-    await pool.query(`
-        UPDATE checked_out
-        SET returned_at = $1
-        WHERE id = $2
-        `,[date,cartId]);
+const updateCheckedOut = async (date,checkedOutId) => {
+    await prisma.checked_out.update({
+        data: {
+            returned_at: new Date(date),
+        },
+        where: {
+            id: Number(checkedOutId)
+        }
+    })
 }
 
 // const removeBookFromUser = async (userId, cartId) => {

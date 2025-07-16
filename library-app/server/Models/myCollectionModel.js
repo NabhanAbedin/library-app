@@ -1,77 +1,118 @@
-const pool = require('../db');
-
+const prisma = require('../db');
 
 const getUserCartModel = async (userId) => {
-    const {rows} = await pool.query(`
-        SELECT 
-            c.id,
-            c.book_id,
-            u.username AS username,
-            b.title AS book_title,
-            a.name AS author_name,
-            g.type AS genre_type
-        FROM cart c
-        JOIN users u ON c.user_id = u.id
-        JOIN books b ON c.book_id = b.id
-        JOIN authors a ON b.author_id = a.id
-        JOIN genre g ON b.genre_id = g.id
-        WHERE c.user_id = $1
-        `,[userId])
     
-    return rows;
+    const rows = await prisma.cart.findMany({
+        where: {
+            user_id: Number(userId)
+        },
+        select: {
+            id: true,
+            book_id: true,
+            users: {
+                select: {
+                    username: true
+                }
+            },
+            books: {
+                select: {
+                    title: true,
+                    authors: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    genre: {
+                        select:{
+                            type: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+    
+    return rows.map(r => ({
+        id: r.id,
+        book_id: r.book_id,
+        username: r.users.username,
+        book_title: r.books.title,
+        author_name: r.books.authors.name,
+        genre_type: r.books.genre.type
+    }))
 };
 
-const addToCartModel = async (bookId,userId) => {
-    await pool.query(`
-        INSERT INTO cart (user_id,book_id)
-        VALUES ($1, $2)
-        `, [userId, bookId])
+const addToCartModel = async (intCart,userId) => {
+    await prisma.cart.createMany({
+        data: intCart.map((bookId)=> ({
+            user_id: Number(userId),
+            book_id: Number(bookId),
+        }))
+    })
 };
 
-const removeFromCartModel = async (bookId,userId) => {
-    await pool.query(`
-        DELETE FROM cart
-        WHERE book_id = $1
-        AND user_id = $2
-        `,[bookId,userId]);
+const removeFromCartModel = async (intCart,userId) => {
+    await prisma.cart.deleteMany({
+        where: {
+            user_id: Number(userId),
+            book_id: {in: intCart}
+        },
+
+    })
 };
 
-const addToCheckedOutModel = async  (bookId,userId,dueDate) => {
-    await pool.query(`
-        INSERT INTO checked_out (user_id,book_id,due_date)
-        VALUES ($1,$2,$3)
-        `,[userId,bookId,dueDate])
+const addToCheckedOutModel = async  (intCart,userId,dueDate) => {
+    await prisma.checked_out.createMany({
+        data: intCart.map((bookId)=> ({
+            user_id: Number(userId),
+            book_id: Number(bookId),
+            due_date: new Date(dueDate)
+        }))
+
+    })
 };
 
 const getCheckedOutModel = async (userId) => {
-    const {rows} = await pool.query(`
-        SELECT 
-        c.id,
-        c.book_id,
-        b.title AS book_title,
-        a.name AS author_name,
-        c.check_out_at,
-        c.due_date
-        FROM checked_out c
-        JOIN users u ON c.user_id = u.id
-        JOIN books b ON c.book_id = b.id
-        JOIN authors a ON b.author_id = a.id
-        WHERE c.user_id = $1
-         AND c.returned_at IS NULL
-        `,[userId]);
-
-    return rows;
+    const rows = await prisma.checked_out.findMany({
+        select: {
+          id:         true,
+          book_id:    true,
+          books: {
+            select: {
+              title:   true,
+              authors: { select: { name: true } }
+            }
+          },
+          check_out_at: true,
+          due_date:     true
+        },
+        where: {
+          user_id:      Number(userId),
+          returned_at:  null
+        }
+      });
+      
+       return rows.map(r => ({
+        id:            r.id,
+        book_id:       r.book_id,
+        book_title:    r.books.title,
+        author_name:   r.books.authors.name,
+        check_out_at:  r.check_out_at,
+        due_date:      r.due_date
+      }));
+      
 }
 
 const getCheckedOutCount = async (userId) => {
-    const { rows } = await pool.query(`
-      SELECT COUNT(*) AS count
-      FROM checked_out
-      WHERE user_id = $1
-      AND returned_at IS NULL
-    `, [userId]);
+   
+    const count = await prisma.checked_out.count({
+        where: {
+            user_id: Number(userId),
+            returned_at: null
+        }
+    })
 
-    return parseInt(rows[0].count, 10);
+    return count;
 }
 
 module.exports = {

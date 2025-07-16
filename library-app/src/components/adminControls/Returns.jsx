@@ -25,8 +25,9 @@ const Returns = () => {
         setReturnedDates(initial);
     },[data]);
 
-    const handleUpdateReturn = async (date, cartId, bookId) => {
-            const res = await updateReturn(date, cartId, bookId);
+    const handleUpdateReturn = async (date, checkedOutId, bookId) => {
+            if (!date || date.trim() === '') return;
+            const res = await updateReturn(date, checkedOutId, bookId);
             if (res.ok) alert('updated return');
             else alert('could not update return');
     }

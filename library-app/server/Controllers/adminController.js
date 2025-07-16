@@ -21,8 +21,8 @@ const updateCheckedOutController = async (req,res) => {
             if (req.role !== 'admin') {
                 return res.status(403).send('not admin');
             }
-            const {date, cartId, bookId} = req.body;
-            await updateCheckedOut(date, cartId);
+            const {date, checkedOutId, bookId} = req.body;
+            await updateCheckedOut(date, checkedOutId);
             const result = await addAvailable(bookId);
             console.log(result);
 
